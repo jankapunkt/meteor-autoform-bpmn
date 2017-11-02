@@ -1,0 +1,8 @@
+.af-bpmn-with-border {
+	border: solid 1px #a4a4a4;
+}
+
+#af-bpmn-canvas,
+#af-bpmn-drop-zone {
+	height: 400px;
+}
