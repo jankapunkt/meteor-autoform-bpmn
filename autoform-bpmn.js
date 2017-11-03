@@ -64,13 +64,14 @@ Template.afBpmn.onCreated(function () {
     instance.dataModel = new ReactiveVar(this.data.value);
     instance.model = new ReactiveVar(instance.data.value || BPMN.createProcess(this.data.title || Random.id()));
     instance.key = new ReactiveVar(this.data.atts['data-schema-key'] || "");
+    instance.saveButton = new ReactiveVar(this.data.atts.saveButton);
+    instance.importButton = new ReactiveVar(this.data.atts.importButton);
+    instance.exportButton = new ReactiveVar(this.data.atts.exportButton);
 
     instance.autorun(function () {
 
+
         if (instance.loaded.get()) {
-
-
-
             BPMN.modeler.importXML(instance.model.get(), function (err, res) {
                 if (res) {
                     BPMN.container.removeClass("with-error").addClass('with-diagram');
@@ -93,16 +94,19 @@ Template.afBpmn.onRendered(function () {
         BPMN.modeler = new BpmnModeler({
             container: BPMN.canvas
         });
-        const eventBus = BPMN.modeler.get("eventBus");
-        eventBus.on('element.mousedown', function () {
-            BPMN.modeler.saveXML({format: true}, function (err, res) {
-                if (res) {
-                    console.log("save")
-                    $('#af-bpmn-model-input').val(res);
-                    instance.model.set(res);
-                }
+
+        if (!this.data.atts.saveButton){
+            const eventBus = BPMN.modeler.get("eventBus");
+            eventBus.on('element.mousedown', function () {
+                BPMN.modeler.saveXML({format: true}, function (err, res) {
+                    if (res) {
+                        //console.log("save")
+                        $('#af-bpmn-model-input').val(res);
+                        instance.model.set(res);
+                    }
+                });
             });
-        });
+        }
 
         this.loaded.set(true);
     }
@@ -115,10 +119,10 @@ Template.afBpmn.helpers({
     dataModel() {
         const model = Template.instance().dataModel.get();
         if (model != this.value) {
-            console.log("this.value changed")
+            //console.log("this.value changed")
             Template.instance().dataModel.set(this.value);
             BPMN.modeler.importXML(this.value, function (err, res) {
-                console.log(err, res);
+                //console.log(err, res);
                 if (res) {
                     BPMN.container.removeClass("with-error").addClass('with-diagram');
                 }
@@ -126,5 +130,25 @@ Template.afBpmn.helpers({
 
         }
         return model;
-    }
+    },
+
+    saveButton(){
+        return Template.instance().saveButton.get();
+    },
 });
+
+
+Template.afBpmn.events({
+
+    'click #af-bpmn-saveButton'(event, instance) {
+        event.preventDefault();
+
+        BPMN.modeler.saveXML({format: true}, function (err, res) {
+            if (res) {
+                //console.log("save")
+                $('#af-bpmn-model-input').val(res);
+                instance.model.set(res);
+            }
+        });
+    }
+})

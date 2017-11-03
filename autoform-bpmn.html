@@ -1,4 +1,11 @@
 <template name="afBpmn">
+	<div class="btn-group pull-right">
+		{{#if saveButton}}
+		<button type="button" class="btn btn-primary" id="af-bpmn-saveButton">
+			<i class="fa fa-save fa-fw"></i> Save
+		</button>
+		{{/if}}
+	</div>
 	<div class="content" id="bpmn-drop-zone">
 		<div class="canvas af-bpmn-with-border" id="af-bpmn-canvas"></div>
 	</div>
