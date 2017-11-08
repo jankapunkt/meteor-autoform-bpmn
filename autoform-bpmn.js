@@ -2,7 +2,7 @@ import {Template} from 'meteor/templating';
 import {Random} from 'meteor/random';
 import {ReactiveVar} from 'meteor/reactive-var';
 import {$} from 'meteor/jquery';
-import { checkNpmVersions } from 'meteor/tmeasday:check-npm-versions';
+import {checkNpmVersions} from 'meteor/tmeasday:check-npm-versions';
 
 //checkNpmVersions({ 'simpl-schema': '0.x.x' }, 'jkuester:autoform-bpmn');
 //checkNpmVersions({ 'bpmn-js': '0.x.x' }, 'jkuester:autoform-bpmn');
@@ -18,16 +18,16 @@ import 'bpmn-js/assets/bpmn-font/css/bpmn-embedded.css';
 
 // extend autoform with bpmn modeler
 AutoForm.addInputType("bpmn", {
-    template:"afBpmn",
-    valueOut(){
+    template: "afBpmn",
+    valueOut() {
         return this.val();
     },
-    valueIn(initialValue){
+    valueIn(initialValue) {
         return initialValue;
     }
 });
 
-const BPMN = {
+window.BpmnUtils = {
     modeler: null,
     canvas: null,
     container: null,
@@ -56,25 +56,38 @@ const BPMN = {
         return newProcess;
     }
 };
+
+const onElementClick = function (event) {
+    const instance = this; //because we bind instance to this context
+    const element = event.element;
+    const businessObject = element.businessObject;
+    instance.currentTarget.set(businessObject);
+};
+
 Template.afBpmn.onCreated(function () {
 
 
     const instance = this;
     instance.loaded = new ReactiveVar(false);
     instance.dataModel = new ReactiveVar(this.data.value);
-    instance.model = new ReactiveVar(instance.data.value || BPMN.createProcess(this.data.title || Random.id()));
+    instance.model = new ReactiveVar(instance.data.value || BpmnUtils.createProcess(this.data.title || Random.id()));
     instance.key = new ReactiveVar(this.data.atts['data-schema-key'] || "");
     instance.saveButton = new ReactiveVar(this.data.atts.saveButton);
+    instance.mapping = new ReactiveVar(this.data.atts.mapping);
     instance.importButton = new ReactiveVar(this.data.atts.importButton);
     instance.exportButton = new ReactiveVar(this.data.atts.exportButton);
+    instance.currentTarget = new ReactiveVar(false);
 
     instance.autorun(function () {
 
 
         if (instance.loaded.get()) {
-            BPMN.modeler.importXML(instance.model.get(), function (err, res) {
+
+            BpmnUtils.modeler.on('element.click', onElementClick.bind(instance));
+
+            BpmnUtils.modeler.importXML(instance.model.get(), function (err, res) {
                 if (res) {
-                    BPMN.container.removeClass("with-error").addClass('with-diagram');
+                    BpmnUtils.container.removeClass("with-error").addClass('with-diagram');
                 }
             });
         }
@@ -86,19 +99,19 @@ Template.afBpmn.onRendered(function () {
     if (!this._rendered) {
         this._rendered = true;
 
-        BPMN.canvas = $('#af-bpmn-canvas');
-        BPMN.container = $('#af-bpmn-drop-zone');
+        BpmnUtils.canvas = $('#af-bpmn-canvas');
+        BpmnUtils.container = $('#af-bpmn-drop-zone');
 
         //console.log(BPMN.canvas);
 
-        BPMN.modeler = new BpmnModeler({
-            container: BPMN.canvas
+        BpmnUtils.modeler = new BpmnModeler({
+            container: BpmnUtils.canvas
         });
 
-        if (!this.data.atts.saveButton){
-            const eventBus = BPMN.modeler.get("eventBus");
+        if (!this.data.atts.saveButton) {
+            const eventBus = BpmnUtils.modeler.get("eventBus");
             eventBus.on('element.mousedown', function () {
-                BPMN.modeler.saveXML({format: true}, function (err, res) {
+                BpmnUtils.modeler.saveXML({format: true}, function (err, res) {
                     if (res) {
                         //console.log("save")
                         $('#af-bpmn-model-input').val(res);
@@ -121,10 +134,11 @@ Template.afBpmn.helpers({
         if (model != this.value) {
             //console.log("this.value changed")
             Template.instance().dataModel.set(this.value);
-            BPMN.modeler.importXML(this.value, function (err, res) {
+            BpmnUtils.modeler.importXML(this.value, function (err, res) {
                 //console.log(err, res);
                 if (res) {
-                    BPMN.container.removeClass("with-error").addClass('with-diagram');
+                    BpmnUtils.modeler.get("canvas").zoom('fit-viewport');
+                    BpmnUtils.container.removeClass("with-error").addClass('with-diagram');
                 }
             });
 
@@ -132,9 +146,46 @@ Template.afBpmn.helpers({
         return model;
     },
 
-    saveButton(){
+    saveButton() {
         return Template.instance().saveButton.get();
     },
+    currentTarget() {
+        return Template.instance().currentTarget.get();
+    },
+    isTask() {
+        const target = Template.instance().currentTarget.get();
+        return target && target.$type.toLowerCase().indexOf("task") > -1;
+    },
+    isEvent() {
+        const target = Template.instance().currentTarget.get();
+        return target && target.$type.toLowerCase().indexOf("event") > -1;
+    },
+    isGateway() {
+        const target = Template.instance().currentTarget.get();
+        return target && target.$type.toLowerCase().indexOf("gateway") > -1;
+    },
+    isSequenceFlow() {
+        const target = Template.instance().currentTarget.get();
+        return target && target.$type.toLowerCase().indexOf("sequence") > -1;
+    },
+    followsExclusiveGateway(){
+        const target = Template.instance().currentTarget.get();
+        return target && target.sourceRef.$type.toLowerCase().indexOf("exclusivegateway") > -1;
+    },
+    taskMapping() {
+        const mapping = Template.instance().mapping.get();
+        if (!mapping || !mapping.task) return null;
+        return mapping.task;
+    },
+    mappingSelected(value) {
+        const target = Template.instance().currentTarget.get();
+        console.log(target.documentation[0].text, value, target.documentation[0].text === value);
+        return
+            target && target.documentation &&
+            target.documentation.length > 0 &&
+            target.documentation[0] &&
+            target.documentation[0].text=== value ? true : false;
+    }
 });
 
 
@@ -143,12 +194,68 @@ Template.afBpmn.events({
     'click #af-bpmn-saveButton'(event, instance) {
         event.preventDefault();
 
-        BPMN.modeler.saveXML({format: true}, function (err, res) {
+        BpmnUtils.modeler.saveXML({format: true}, function (err, res) {
             if (res) {
-                //console.log("save")
+                //console.log(res)
                 $('#af-bpmn-model-input').val(res);
                 instance.model.set(res);
             }
         });
+    },
+
+    'change #af-bpmn-task-mappingselect'(event, instance) {
+        const currentTarget = instance.currentTarget.get();
+        const mapping = instance.mapping.get();
+        const moddle = BpmnUtils.modeler.get('moddle');
+        const elementRegistry = BpmnUtils.modeler.get('elementRegistry');
+        const modeling = BpmnUtils.modeler.get('modeling');
+
+        const selectedValue = $('#af-bpmn-task-mappingselect').val();
+        let name;
+        for (let entry of mapping.task) {
+            if (entry.value == selectedValue) {
+                name = entry.label;
+                break;
+            }
+        }
+        if (!name) name = "Unnamed Task";
+        currentTarget.name = name;
+        const element = elementRegistry.get(currentTarget.id);
+        const documentation = moddle.create('bpmn:Documentation', {
+            text: selectedValue,
+        });
+
+        modeling.updateProperties(element, {
+            documentation: [documentation],
+        });
+    },
+
+    'click .af-bpmn-nameinput'(event, instance) {
+        event.preventDefault();
+        const ref = $(event.currentTarget).attr("data-ref");
+
+        const gatewayName = $('#' + ref).val();
+        const target = instance.currentTarget.get();
+        target.name = gatewayName;
+        console.log(gatewayName, target);
+    },
+
+    'click #af-bpmn-save-sequenceflow'(event, instance) {
+        event.preventDefault();
+        const ref = $(event.currentTarget).attr("data-ref");
+        const expression = $('#' + ref).val();
+        const currentTarget = instance.currentTarget.get();
+        const moddle = BpmnUtils.modeler.get('moddle');
+        const elementRegistry = BpmnUtils.modeler.get('elementRegistry');
+        const modeling = BpmnUtils.modeler.get('modeling');
+
+        const element = elementRegistry.get(currentTarget.id);
+        const newCondition = moddle.create('bpmn:FormalExpression', {
+            body: '${ ' + expression + ' }'
+        });
+        modeling.updateProperties(element, {
+            conditionExpression: newCondition
+        });
+        console.log(currentTarget);
     }
 })

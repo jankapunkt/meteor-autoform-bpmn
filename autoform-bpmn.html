@@ -1,14 +1,61 @@
 <template name="afBpmn">
-	<div class="btn-group pull-right">
-		{{#if saveButton}}
-		<button type="button" class="btn btn-primary" id="af-bpmn-saveButton">
-			<i class="fa fa-save fa-fw"></i> Save
-		</button>
-		{{/if}}
-	</div>
+
+	{{#if currentTarget}}
+		<div class="af-bpmn-options-panel af-bpmn-with-border">
+			<h4>{{currentTarget.$type}} {{currentTarget.name}}</h4>
+			<hr>
+			{{#if isTask}}
+				{{#if taskMapping}}
+					<select id="af-bpmn-task-mappingselect" class="form-control">
+						<option value="">Select One</option>
+						{{#each taskMapping}}
+							<option value="{{this.value}}"
+									selected="{{mappingSelected this.value}}">{{this.label}}</option>
+						{{/each}}
+					</select>
+				{{/if}}
+			{{/if}}
+			{{#if isEvent}}
+				<div class="input-group">
+					<input id="af-bpmn-event-input" type="text" class="form-control"
+						   placeholder="Optional - Enter what this Event is about">
+					<span class="input-group-btn">
+						<button class="btn btn-primary af-bpmn-nameinput" type="button" data-ref="af-bpmn-event-input"><i class="fa fa-save fa-fw"></i></button>
+      				</span>
+				</div>
+			{{/if}}
+			{{#if isGateway}}
+				{{#with currentTarget}}
+					<div class="input-group">
+						<input type="text" class="form-control" id="af-bpmn-gateway-input"
+							   placeholder="Optional - Enter what this Gateway is about" value="{{this.name}}">
+						<span class="input-group-btn">
+							<button class="btn btn-primary af-bpmn-nameinput" type="button" data-ref="af-bpmn-gateway-input">
+								<i class="fa fa-save fa-fw"></i>
+							</button>
+						</span>
+					</div>
+				{{/with}}
+			{{/if}}
+			{{#if isSequenceFlow}}
+				{{#if followsExclusiveGateway}}
+				<textarea rows="4" class="form-control" id="af-bpmn-variableInput"
+						  placeholder="Enter your code condition here. I needs to evaluate to true or false."></textarea>
+				<button id="af-bpmn-save-sequenceflow" class="btn btn-block btn-primary" data-ref="af-bpmn-variableInput"><i class="fa fa-save"></i></button>
+				{{/if}}
+			{{/if}}
+		</div>
+	{{/if}}
 	<div class="content" id="bpmn-drop-zone">
 		<div class="canvas af-bpmn-with-border" id="af-bpmn-canvas"></div>
 	</div>
+	<div class="btn-group pull-right">
+		{{#if saveButton}}
+			<button type="button" class="btn btn-primary" id="af-bpmn-saveButton">
+				<i class="fa fa-save fa-fw"></i> Save
+			</button>
+		{{/if}}
+	</div>
 	<input type="hidden" id="af-bpmn-model-input" data-schema-key="{{dataSchemaKey}}" />
-	<input type="hidden" id="af-bpmn-reactivity-enforcer" value="{{dataModel}}"/>
+	<input type="hidden" id="af-bpmn-reactivity-enforcer" value="{{dataModel}}" />
 </template>
