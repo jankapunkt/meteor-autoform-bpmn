@@ -39,8 +39,9 @@
 			{{/if}}
 			{{#if isSequenceFlow}}
 				{{#if followsExclusiveGateway}}
+
 				<textarea rows="4" class="form-control" id="af-bpmn-variableInput"
-						  placeholder="Enter your code condition here. I needs to evaluate to true or false."></textarea>
+						  placeholder="Enter your code condition here. I needs to evaluate to true or false.">{{sequenceFlowDecisionOption}}</textarea>
 				<button id="af-bpmn-save-sequenceflow" class="btn btn-block btn-primary" data-ref="af-bpmn-variableInput"><i class="fa fa-save"></i></button>
 				{{/if}}
 			{{/if}}

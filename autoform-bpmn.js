@@ -168,6 +168,13 @@ Template.afBpmn.helpers({
         const target = Template.instance().currentTarget.get();
         return target && target.$type.toLowerCase().indexOf("sequence") > -1;
     },
+    sequenceFlowDecisionOption(){
+        const currentTarget = Template.instance().currentTarget.get()
+        console.log("sequenceFlowDecisionOption: ", currentTarget);
+        return currentTarget && currentTarget.conditionExpression
+            ? currentTarget.conditionExpression.body
+            : "";
+    },
     followsExclusiveGateway(){
         const target = Template.instance().currentTarget.get();
         return target && target.sourceRef.$type.toLowerCase().indexOf("exclusivegateway") > -1;
@@ -180,12 +187,11 @@ Template.afBpmn.helpers({
     mappingSelected(value) {
         const target = Template.instance().currentTarget.get();
         console.log(target.documentation[0].text, value, target.documentation[0].text === value);
-        return
-            target && target.documentation &&
+        return !!(target && target.documentation &&
             target.documentation.length > 0 &&
             target.documentation[0] &&
-            target.documentation[0].text=== value ? true : false;
-    }
+            target.documentation[0].text === value);
+    },
 });
 
 
