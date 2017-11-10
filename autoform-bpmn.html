@@ -47,10 +47,52 @@
 			{{/if}}
 		</div>
 	{{/if}}
+
+	<!-- MAIN CANVAS -->
+
+	{{#if sourceView}}
+		<textarea rows="12" class="form-control" id="af-bpmn-source-view">{{source}}</textarea>
+		{{else}}
 	<div class="content" id="bpmn-drop-zone">
 		<div class="canvas af-bpmn-with-border" id="af-bpmn-canvas"></div>
+		{{#unless loadComplete}}
+			<div id="af-bpmn-loading well well-lg">
+				<i class="fa fa-spinner fa-pulse"></i> Loading data
+			</div>
+		{{/unless}}
 	</div>
+	{{/if}}
+
+
+
+	<hr>
 	<div class="btn-group pull-right">
+		{{#if switchButton}}
+			<button type="button" class="btn btn-default af-bpmn-margin-right" id="af-bpmn-switchButton">
+				<i class="fa fa-code fa-fw"></i> Switch
+			</button>
+		{{/if}}
+		{{#if importButton}}
+			<button type="button" class="btn btn-default af-bpmn-margin-right" id="af-bpmn-importButton">
+				<i class="fa fa-upload fa-fw"></i> Import
+			</button>
+		{{/if}}
+		{{#if exportButton}}
+			<!-- Split button -->
+			<div class="btn-group af-bpmn-margin-right ">
+				<button type="button" class="btn btn-default" id="af-bpmn-exportButton">
+					<i class="fa fa-download fa-fw"></i> Export
+				</button>
+				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<span class="caret"></span>
+					<span class="sr-only">Toggle Dropdown</span>
+				</button>
+				<ul class="dropdown-menu">
+					<li><a>.bpmn</a></li>
+					<li><a>.svg</a></li>
+				</ul>
+			</div>
+		{{/if}}
 		{{#if saveButton}}
 			<button type="button" class="btn btn-primary" id="af-bpmn-saveButton">
 				<i class="fa fa-save fa-fw"></i> Save

@@ -27,6 +27,8 @@ AutoForm.addInputType("bpmn", {
     }
 });
 
+
+
 window.BpmnUtils = {
     modeler: null,
     canvas: null,
@@ -64,19 +66,30 @@ const onElementClick = function (event) {
     instance.currentTarget.set(businessObject);
 };
 
+const ViewModes = {
+    source:"source",
+    modeler:"modeler",
+};
+
 Template.afBpmn.onCreated(function () {
 
 
     const instance = this;
     instance.loaded = new ReactiveVar(false);
+    instance.loadComplete = new ReactiveVar(false);
     instance.dataModel = new ReactiveVar(this.data.value);
     instance.model = new ReactiveVar(instance.data.value || BpmnUtils.createProcess(this.data.title || Random.id()));
     instance.key = new ReactiveVar(this.data.atts['data-schema-key'] || "");
-    instance.saveButton = new ReactiveVar(this.data.atts.saveButton);
     instance.mapping = new ReactiveVar(this.data.atts.mapping);
-    instance.importButton = new ReactiveVar(this.data.atts.importButton);
-    instance.exportButton = new ReactiveVar(this.data.atts.exportButton);
+    instance.viewMode = new ReactiveVar("");
+    instance.viewMode.set(ViewModes.modeler);
     instance.currentTarget = new ReactiveVar(false);
+
+    // BUTTON BAR
+    instance.saveButton = new ReactiveVar(this.data.atts.saveButton || this.data.atts.buttons);
+    instance.importButton = new ReactiveVar(this.data.atts.importButton || this.data.atts.buttons);
+    instance.exportButton = new ReactiveVar(this.data.atts.exportButton || this.data.atts.buttons);
+    instance.switchButton = new ReactiveVar(this.data.atts.switchButton || this.data.atts.buttons);
 
     instance.autorun(function () {
 
@@ -88,6 +101,7 @@ Template.afBpmn.onCreated(function () {
             BpmnUtils.modeler.importXML(instance.model.get(), function (err, res) {
                 if (res) {
                     BpmnUtils.container.removeClass("with-error").addClass('with-diagram');
+                    instance.loadComplete.set(true);
                 }
             });
         }
@@ -134,6 +148,10 @@ Template.afBpmn.helpers({
     dataSchemaKey() {
         return Template.instance().key.get();
     },
+
+    loadComplete() {
+        return Template.instance().loadComplete.get();
+    },
     dataModel() {
         const model = Template.instance().dataModel.get();
         if (model != this.value) {
@@ -144,16 +162,35 @@ Template.afBpmn.helpers({
                 if (res) {
                     BpmnUtils.modeler.get("canvas").zoom('fit-viewport');
                     BpmnUtils.container.removeClass("with-error").addClass('with-diagram');
+                    this.loadComplete.set(true);
                 }
-            });
+            }.bind(Template.instance()));
 
         }
         return model;
     },
 
+    sourceView() {
+        return Template.instance().viewMode.get() === ViewModes.source;
+    },
+    source(){
+        return Template.instance().dataModel.get();
+    },
+
     saveButton() {
         return Template.instance().saveButton.get();
     },
+    exportButton() {
+        return Template.instance().exportButton.get();
+    },
+    importButton() {
+        return Template.instance().exportButton.get();
+    },
+    switchButton() {
+        return Template.instance().exportButton.get();
+    },
+
+
     currentTarget() {
         return Template.instance().currentTarget.get();
     },
@@ -173,14 +210,14 @@ Template.afBpmn.helpers({
         const target = Template.instance().currentTarget.get();
         return target && target.$type.toLowerCase().indexOf("sequence") > -1;
     },
-    sequenceFlowDecisionOption(){
+    sequenceFlowDecisionOption() {
         const currentTarget = Template.instance().currentTarget.get()
         console.log("sequenceFlowDecisionOption: ", currentTarget);
         return currentTarget && currentTarget.conditionExpression
             ? currentTarget.conditionExpression.body
             : "";
     },
-    followsExclusiveGateway(){
+    followsExclusiveGateway() {
         const target = Template.instance().currentTarget.get();
         return target && target.sourceRef.$type.toLowerCase().indexOf("exclusivegateway") > -1;
     },
@@ -262,12 +299,25 @@ Template.afBpmn.events({
 
         const element = elementRegistry.get(currentTarget.id);
         const newCondition = moddle.create('bpmn:FormalExpression', {
-            body: "<![CDATA["+ expression + "]]>",
-            language:"javascript",
+            body: "<![CDATA[" + expression + "]]>",
+            language: "javascript",
         });
         modeling.updateProperties(element, {
             conditionExpression: newCondition
         });
         console.log(currentTarget);
-    }
+    },
+
+    'click #af-bpmn-switchButton'(event, instance) {
+        event.preventDefault();
+        instance.currentTarget.set(null);
+
+        const currentView = instance.viewMode.get();
+        if (currentView === ViewModes.source){
+            instance.viewMode.set(ViewModes.modeler);
+        }
+        if (currentView === ViewModes.modeler){
+            instance.viewMode.set(ViewModes.source)
+        }
+    },
 })
