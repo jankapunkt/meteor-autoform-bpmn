@@ -27,8 +27,6 @@ AutoForm.addInputType("bpmn", {
     }
 });
 
-
-
 window.BpmnUtils = {
     modeler: null,
     canvas: null,
@@ -59,6 +57,25 @@ window.BpmnUtils = {
     }
 };
 
+const setEncoded = function(link, name, data) {
+    const encodedData = encodeURIComponent(data);
+    if (data) {
+        link.prop('disabled', false).attr({
+            'href': 'data:application/bpmn20-xml;charset=UTF-8,' + encodedData,
+            'download': name,
+        });
+    } else {
+        link.prop('disabled', true)
+    }
+};
+
+const saveDiagram = function(done) {
+    BpmnUtils.modeler.saveXML({ format: true }, function(err, xml) {
+        done(err, xml);
+    });
+};
+
+
 const onElementClick = function (event) {
     const instance = this; //because we bind instance to this context
     const element = event.element;
@@ -73,6 +90,8 @@ const ViewModes = {
 
 Template.afBpmn.onCreated(function () {
 
+
+    const uploadSupported= window.File && window.FileReader && window.FileList && window.Blob;
 
     const instance = this;
     instance.loaded = new ReactiveVar(false);
@@ -96,8 +115,8 @@ Template.afBpmn.onCreated(function () {
 
         if (instance.loaded.get()) {
 
-            BpmnUtils.modeler.on('element.click', onElementClick.bind(instance));
 
+            BpmnUtils.modeler.on('element.click', onElementClick.bind(instance));
             BpmnUtils.modeler.importXML(instance.model.get(), function (err, res) {
                 if (res) {
                     BpmnUtils.container.removeClass("with-error").addClass('with-diagram');
@@ -115,6 +134,7 @@ Template.afBpmn.onRendered(function () {
 
         BpmnUtils.canvas = $('#af-bpmn-canvas');
         BpmnUtils.container = $('#af-bpmn-drop-zone');
+        const downloadLink = $('#af-bpmn-exportButton');
 
         //console.log(BPMN.canvas);
 
@@ -140,6 +160,18 @@ Template.afBpmn.onRendered(function () {
             });
         }
 
+        const exportArtifacts = _.debounce(function() {
+
+            //saveSVG(function(err, svg) {
+            //    setEncoded(downloadSvgLink, 'diagram.svg', err ? null : svg);
+            //});
+
+            saveDiagram(function(err, xml) {
+                setEncoded(downloadLink, 'diagram.bpmn', err ? null : xml);
+            });
+        }, 500);
+
+        BpmnUtils.modeler.on('commandStack.changed', exportArtifacts);
         this.loaded.set(true);
     }
 });
@@ -147,6 +179,10 @@ Template.afBpmn.onRendered(function () {
 Template.afBpmn.helpers({
     dataSchemaKey() {
         return Template.instance().key.get();
+    },
+
+    uploadSupprted(){
+        return window.File && window.FileReader && window.FileList && window.Blob;
     },
 
     loadComplete() {
@@ -318,6 +354,29 @@ Template.afBpmn.events({
         }
         if (currentView === ViewModes.modeler){
             instance.viewMode.set(ViewModes.source)
+        }
+    },
+
+    'change #af-bpmn-file-upload'(event, instance) {
+        const target = $('#af-bpmn-file-upload').get(0);
+        const files = target.files;
+        if (files && files[0]) {
+            const file = files[0];
+            const reader = new FileReader();
+
+            // Closure to capture the file information.
+            reader.onloadend = function(result) {
+                console.log(result);
+                if (result && result.currentTarget && result.currentTarget.result) {
+                    BpmnUtils.modeler.importXML(result.currentTarget.result, function(err, res){
+                        if (err) BpmnUtils.modeler.importXML(instance.dataModel.get());
+                        //else notify
+                    });
+                }
+            };
+
+            // Read in the image file as a data URL.
+            reader.readAsText(file);
         }
     },
 })

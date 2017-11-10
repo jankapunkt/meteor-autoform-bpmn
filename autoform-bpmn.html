@@ -73,25 +73,18 @@
 			</button>
 		{{/if}}
 		{{#if importButton}}
-			<button type="button" class="btn btn-default af-bpmn-margin-right" id="af-bpmn-importButton">
+			<label for="af-bpmn-file-upload" class="btn btn-default af-bpmn-margin-right">
 				<i class="fa fa-upload fa-fw"></i> Import
-			</button>
+				<!-- The file input field used as target for the file upload widget -->
+			</label>
+			{{#if uploadSupprted}}
+				<input id="af-bpmn-file-upload" type="file" name="files" style="display: none" accept=".txt,.bpmn,.bpmn20">
+			{{/if}}
 		{{/if}}
 		{{#if exportButton}}
-			<!-- Split button -->
-			<div class="btn-group af-bpmn-margin-right ">
-				<button type="button" class="btn btn-default" id="af-bpmn-exportButton">
+				<a href class="btn btn-default af-bpmn-margin-right" id="af-bpmn-exportButton">
 					<i class="fa fa-download fa-fw"></i> Export
-				</button>
-				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					<span class="caret"></span>
-					<span class="sr-only">Toggle Dropdown</span>
-				</button>
-				<ul class="dropdown-menu">
-					<li><a>.bpmn</a></li>
-					<li><a>.svg</a></li>
-				</ul>
-			</div>
+				</a>
 		{{/if}}
 		{{#if saveButton}}
 			<button type="button" class="btn btn-primary" id="af-bpmn-saveButton">
