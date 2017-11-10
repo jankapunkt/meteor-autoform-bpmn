@@ -110,10 +110,15 @@ Template.afBpmn.onRendered(function () {
 
         if (!this.data.atts.saveButton) {
             const eventBus = BpmnUtils.modeler.get("eventBus");
+
+            //use these events
+            //commandStack.changed
+            //elements.changed
+
             eventBus.on('element.mousedown', function () {
                 BpmnUtils.modeler.saveXML({format: true}, function (err, res) {
                     if (res) {
-                        //console.log("save")
+                        console.log("save", res)
                         $('#af-bpmn-model-input').val(res);
                         instance.model.set(res);
                     }
@@ -202,7 +207,7 @@ Template.afBpmn.events({
 
         BpmnUtils.modeler.saveXML({format: true}, function (err, res) {
             if (res) {
-                //console.log(res)
+                console.log("save", res)
                 $('#af-bpmn-model-input').val(res);
                 instance.model.set(res);
             }
@@ -257,7 +262,8 @@ Template.afBpmn.events({
 
         const element = elementRegistry.get(currentTarget.id);
         const newCondition = moddle.create('bpmn:FormalExpression', {
-            body: '${ ' + expression + ' }'
+            body: "<![CDATA["+ expression + "]]>",
+            language:"javascript",
         });
         modeling.updateProperties(element, {
             conditionExpression: newCondition
