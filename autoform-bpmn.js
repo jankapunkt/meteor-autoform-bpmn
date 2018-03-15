@@ -1,20 +1,16 @@
-import {Template} from 'meteor/templating';
-import {Random} from 'meteor/random';
-import {ReactiveVar} from 'meteor/reactive-var';
-import {$} from 'meteor/jquery';
-import {checkNpmVersions} from 'meteor/tmeasday:check-npm-versions';
+import { Template } from 'meteor/templating';
+import { Random } from 'meteor/random';
+import { ReactiveVar } from 'meteor/reactive-var';
+import { $ } from 'meteor/jquery';
+import { checkNpmVersions } from 'meteor/tmeasday:check-npm-versions';
 
-//checkNpmVersions({ 'simpl-schema': '0.x.x' }, 'jkuester:autoform-bpmn');
-//checkNpmVersions({ 'bpmn-js': '0.x.x' }, 'jkuester:autoform-bpmn');
-//checkNpmVersions({ 'diagram-js': '0.x.x' }, 'jkuester:autoform-bpmn');
-//checkNpmVersions({ 'matches-selector': '1.x.x' }, 'jkuester:autoform-bpmn');
+checkNpmVersions({ 'simpl-schema': '0.x.x' }, 'jkuester:autoform-bpmn');
+checkNpmVersions({ 'bpmn-js': '0.x.x' }, 'jkuester:autoform-bpmn');
+checkNpmVersions({ 'diagram-js': '1.x.x' }, 'jkuester:autoform-bpmn');
 
 import BpmnModeler from 'bpmn-js/lib/Modeler';
 import 'diagram-js/assets/diagram-js.css';
 import 'bpmn-js/assets/bpmn-font/css/bpmn-embedded.css';
-//import './bpmn.css';
-//import './bpmn.html'
-
 
 // extend autoform with bpmn modeler
 AutoForm.addInputType("bpmn", {
@@ -57,7 +53,7 @@ window.BpmnUtils = {
     }
 };
 
-const setEncoded = function(link, name, data) {
+const setEncoded = function (link, name, data) {
     const encodedData = encodeURIComponent(data);
     if (data) {
         link.prop('disabled', false).attr({
@@ -69,8 +65,8 @@ const setEncoded = function(link, name, data) {
     }
 };
 
-const saveDiagram = function(done) {
-    BpmnUtils.modeler.saveXML({ format: true }, function(err, xml) {
+const saveDiagram = function (done) {
+    BpmnUtils.modeler.saveXML({ format: true }, function (err, xml) {
         done(err, xml);
     });
 };
@@ -84,14 +80,14 @@ const onElementClick = function (event) {
 };
 
 const ViewModes = {
-    source:"source",
-    modeler:"modeler",
+    source: "source",
+    modeler: "modeler",
 };
 
 Template.afBpmn.onCreated(function () {
 
 
-    const uploadSupported= window.File && window.FileReader && window.FileList && window.Blob;
+    const uploadSupported = window.File && window.FileReader && window.FileList && window.Blob;
 
     const instance = this;
     instance.loaded = new ReactiveVar(false);
@@ -150,7 +146,7 @@ Template.afBpmn.onRendered(function () {
             //elements.changed
 
             eventBus.on('element.mousedown', function () {
-                BpmnUtils.modeler.saveXML({format: true}, function (err, res) {
+                BpmnUtils.modeler.saveXML({ format: true }, function (err, res) {
                     if (res) {
                         console.log("save", res)
                         $('#af-bpmn-model-input').val(res);
@@ -160,13 +156,13 @@ Template.afBpmn.onRendered(function () {
             });
         }
 
-        const exportArtifacts = _.debounce(function() {
+        const exportArtifacts = _.debounce(function () {
 
             //saveSVG(function(err, svg) {
             //    setEncoded(downloadSvgLink, 'diagram.svg', err ? null : svg);
             //});
 
-            saveDiagram(function(err, xml) {
+            saveDiagram(function (err, xml) {
                 setEncoded(downloadLink, 'diagram.bpmn', err ? null : xml);
             });
         }, 500);
@@ -181,7 +177,7 @@ Template.afBpmn.helpers({
         return Template.instance().key.get();
     },
 
-    uploadSupprted(){
+    uploadSupprted() {
         return window.File && window.FileReader && window.FileList && window.Blob;
     },
 
@@ -209,7 +205,7 @@ Template.afBpmn.helpers({
     sourceView() {
         return Template.instance().viewMode.get() === ViewModes.source;
     },
-    source(){
+    source() {
         return Template.instance().dataModel.get();
     },
 
@@ -278,7 +274,7 @@ Template.afBpmn.events({
     'click #af-bpmn-saveButton'(event, instance) {
         event.preventDefault();
 
-        BpmnUtils.modeler.saveXML({format: true}, function (err, res) {
+        BpmnUtils.modeler.saveXML({ format: true }, function (err, res) {
             if (res) {
                 console.log("save", res)
                 $('#af-bpmn-model-input').val(res);
@@ -349,10 +345,10 @@ Template.afBpmn.events({
         instance.currentTarget.set(null);
 
         const currentView = instance.viewMode.get();
-        if (currentView === ViewModes.source){
+        if (currentView === ViewModes.source) {
             instance.viewMode.set(ViewModes.modeler);
         }
-        if (currentView === ViewModes.modeler){
+        if (currentView === ViewModes.modeler) {
             instance.viewMode.set(ViewModes.source)
         }
     },
@@ -365,10 +361,10 @@ Template.afBpmn.events({
             const reader = new FileReader();
 
             // Closure to capture the file information.
-            reader.onloadend = function(result) {
+            reader.onloadend = function (result) {
                 console.log(result);
                 if (result && result.currentTarget && result.currentTarget.result) {
-                    BpmnUtils.modeler.importXML(result.currentTarget.result, function(err, res){
+                    BpmnUtils.modeler.importXML(result.currentTarget.result, function (err, res) {
                         if (err) BpmnUtils.modeler.importXML(instance.dataModel.get());
                         //else notify
                     });
