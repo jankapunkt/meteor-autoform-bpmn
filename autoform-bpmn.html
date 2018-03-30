@@ -1,97 +1,58 @@
 <template name="afBpmn">
 
-	{{#if currentTarget}}
-		<div class="af-bpmn-options-panel af-bpmn-with-border">
-			<h4>{{currentTarget.$type}} {{currentTarget.name}}</h4>
-			<hr>
-			{{#if isTask}}
-				{{#if taskMapping}}
-					<select id="af-bpmn-task-mappingselect" class="form-control">
-						<option value="">Select One</option>
-						{{#each taskMapping}}
-							<option value="{{this.value}}"
-									selected="{{mappingSelected this.value}}">{{this.label}}</option>
-						{{/each}}
-					</select>
-				{{/if}}
-			{{/if}}
-			{{#if isEvent}}
-				<div class="input-group">
-					<input id="af-bpmn-event-input" type="text" class="form-control"
-						   placeholder="Optional - Enter what this Event is about">
-					<span class="input-group-btn">
-						<button class="btn btn-primary af-bpmn-nameinput" type="button" data-ref="af-bpmn-event-input"><i class="fa fa-save fa-fw"></i></button>
-      				</span>
-				</div>
-			{{/if}}
-			{{#if isGateway}}
-				{{#with currentTarget}}
-					<div class="input-group">
-						<input type="text" class="form-control" id="af-bpmn-gateway-input"
-							   placeholder="Optional - Enter what this Gateway is about" value="{{this.name}}">
-						<span class="input-group-btn">
-							<button class="btn btn-primary af-bpmn-nameinput" type="button" data-ref="af-bpmn-gateway-input">
-								<i class="fa fa-save fa-fw"></i>
-							</button>
-						</span>
-					</div>
-				{{/with}}
-			{{/if}}
-			{{#if isSequenceFlow}}
-				{{#if followsExclusiveGateway}}
 
-				<textarea rows="4" class="form-control" id="af-bpmn-variableInput"
-						  placeholder="Enter your code condition here. I needs to evaluate to true or false.">{{sequenceFlowDecisionOption}}</textarea>
-				<button id="af-bpmn-save-sequenceflow" class="btn btn-block btn-primary" data-ref="af-bpmn-variableInput"><i class="fa fa-save"></i></button>
-				{{/if}}
-			{{/if}}
-		</div>
-	{{/if}}
-
-	<!-- MAIN CANVAS -->
-
-	{{#if sourceView}}
-		<textarea rows="12" class="form-control" id="af-bpmn-source-view">{{source}}</textarea>
-		{{else}}
-	<div class="content" id="bpmn-drop-zone">
-		<div class="canvas af-bpmn-with-border" id="af-bpmn-canvas"></div>
 		{{#unless loadComplete}}
 			<div id="af-bpmn-loading well well-lg">
 				<i class="fa fa-spinner fa-pulse"></i> Loading data
 			</div>
 		{{/unless}}
-	</div>
-	{{/if}}
+		<div class="content" id="af-bpmn-drop-zone">
+			<div class="message intro">
+				<div class="note">
+					Drop BPMN diagram from your desktop or <a id="af-bpmn-create-diagram" href>create a new diagram</a> to
+					get started.
+				</div>
+			</div>
+
+			<div class="message error">
+				<div class="note">
+					<p>Ooops, we could not display the BPMN 2.0 diagram.</p>
+
+					<div class="details">
+						<span>cause of the problem</span>
+						<pre></pre>
+					</div>
+				</div>
+			</div>
+
+			<div class="canvas" id="af-bpmn-canvas"></div>
+			<div class="properties-panel-parent" id="af-bpmn-properties-panel"></div>
 
 
-
-	<hr>
-	<div class="btn-group pull-right">
-		{{#if switchButton}}
-			<button type="button" class="btn btn-default af-bpmn-margin-right" id="af-bpmn-switchButton">
-				<i class="fa fa-code fa-fw"></i> Switch
-			</button>
-		{{/if}}
-		{{#if importButton}}
-			<label for="af-bpmn-file-upload" class="btn btn-default af-bpmn-margin-right">
-				<i class="fa fa-upload fa-fw"></i> Import
-				<!-- The file input field used as target for the file upload widget -->
-			</label>
-			{{#if uploadSupprted}}
-				<input id="af-bpmn-file-upload" type="file" name="files" style="display: none" accept=".txt,.bpmn,.bpmn20">
-			{{/if}}
-		{{/if}}
-		{{#if exportButton}}
-				<a href class="btn btn-default af-bpmn-margin-right" id="af-bpmn-exportButton">
-					<i class="fa fa-download fa-fw"></i> Export
+		<ul class="buttons">
+			<li>
+				download
+			</li>
+			<li>
+				<a id="af-bpmn-download-diagram" href title="download BPMN diagram">
+					BPMN diagram
 				</a>
-		{{/if}}
-		{{#if saveButton}}
-			<button type="button" class="btn btn-primary" id="af-bpmn-saveButton">
-				<i class="fa fa-save fa-fw"></i> Save
-			</button>
-		{{/if}}
-	</div>
+			</li>
+			<li>
+				<a id="af-bpmn-download-svg" href title="download as SVG image">
+					SVG image
+				</a>
+			</li>
+			<li>
+				<a id="af-bpmn-save-diagram" href title="Save diagram">
+					{{#if saving}}Saving{{else}}Save{{/if}}
+				</a>
+			</li>
+		</ul>
+		</div>
+
+	<!-- autoform related -->
 	<input type="hidden" id="af-bpmn-model-input" data-schema-key="{{dataSchemaKey}}" />
 	<input type="hidden" id="af-bpmn-reactivity-enforcer" value="{{dataModel}}" />
 </template>
+

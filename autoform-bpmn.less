@@ -1,0 +1,115 @@
+@import ".npm/package/node_modules/bpmn-js-properties-panel/styles/_variables.less";
+@import ".npm/package/node_modules/bpmn-js-properties-panel/styles/_mixins.less";
+@import ".npm/package/node_modules/bpmn-js-properties-panel/styles/properties.less";
+
+* {
+	box-sizing: border-box;
+}
+
+a:link {
+	text-decoration: none;
+}
+
+.content {
+	position: relative;
+    border: solid 1px #a4a4a4;
+	width: 100%;
+	height: 500px;
+
+	> .message {
+		width: 100%;
+		height: 100%;
+		text-align: center;
+		display: table;
+
+		font-size: 16px;
+		color: #111;
+
+		.note {
+			vertical-align: middle;
+			text-align: center;
+			display: table-cell;
+		}
+
+		.error {
+			.details {
+				max-width: 500px;
+				font-size: 12px;
+				margin: 20px auto;
+				text-align: left;
+			}
+
+			pre {
+				border: solid 1px #CCC;
+				background: #EEE;
+				padding: 10px;
+			}
+		}
+	}
+	&:not(.with-error) .error,
+	&.with-error .intro,
+	&.with-diagram .intro {
+		display: none;
+	}
+
+	.canvas {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+	}
+
+	.canvas,
+	.properties-panel-parent {
+		display: none;
+	}
+
+	&.with-diagram {
+		.canvas,
+		.properties-panel-parent  {
+			display: block;
+		}
+	}
+}
+
+
+.buttons {
+    position: absolute;
+	bottom: 20px;
+	left: 20px;
+    z-index: 10;
+	padding: 0;
+	margin: 0;
+	list-style: none;
+
+	> li {
+		display: inline-block;
+		margin-right: 10px;
+
+		> a {
+			background: #DDD;
+			border: solid 1px #666;
+			display: inline-block;
+			padding: 5px;
+		}
+	}
+}
+
+.properties-panel-parent {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	width: 260px;
+	z-index: 10;
+	border-left: 1px solid #ccc;
+	overflow: auto;
+	&:empty {
+		display: none;
+	}
+	> .djs-properties-panel {
+		padding-bottom: 70px;
+		min-height:100%;
+	}
+}
