@@ -1,11 +1,53 @@
-<h1 class='text-align:center'>Autoform BPMN</h1>
-<p class='text-align: center'>Bringing the power of the bpmn-js modeler to your autoform</p>
+<h1 class='text-align:center'>Autoform BPMN Extension</h1>
+<p class='text-align: center'>Bringing the power of the bpmn-js modeler to your AutoForm</p>
 <hr>
 
 ### About
 
-This packages wraps the bpmn-js modeler and properties panel into an autoform extension. It is an out-of-the-box extension
-that saves the modeled bpmn xml as xml-string in the specified field.
+This packages wraps the [bpmn-js](https://github.com/bpmn-io/bpmn-js) modeler and [bpmn-jsproperties-panel](https://github.com/bpmn-io/bpmn-js-properties-panel) into an "out-of-the-box extension" for [aldeed:autoform](https://github.com/aldeed/meteor-autoform).
+"Out-of-the-box extension" means, that it saves the modeled bpmn xml as xml-string into the specified field without any initial configuration required.
+The modeler allows you to set the camunda moddle options, so that your autoform lets you create camunda compatible bpmn process definitions.
+
+### Requirements
+
+This package requires Meteor 1.6 or higher and is currently built against with AutoForm 6.2.0
+
+### Install
+
+Note: Before you install you should read one the [AutoForm installation guide](https://github.com/aldeed/meteor-autoform#installation).
+
+As this packages comes with fixed dependencies (very important for a stable release) you just need to add it as a meteor package:
+
+```bash
+meteor add jkuester:autoform-bpmn
+```
+
+Define a field as `autoform` type `in Schema.
+
+
+```javascript
+import SimpleSchema from 'simpl-schema';
+
+const bpmnSchema = new SimpleSchema({
+    data: {
+        autoform: {
+            type:'bpmn',
+        }
+    }
+})
+```
+
+That's it. When you load your form you should be able to start modeling immediately.
+
+### Updating the model
+
+Currently your model is updated on click of event of the save button. So keep in mind when modeling to click save from time to time.
+**Clicking the modeler's save button will only update the bpmn xml value to the field and not trigger any AutoForm submit!**
+
+In the future there will be an autosave on `commandStack.change` which is basically any registered change.
+
+
+### Dependencies
 
 Currently it uses the following versions:
 
@@ -24,42 +66,4 @@ To comfort you as user this is all now wrapped up and you don't need to install 
 <br>
 So the decision is usability over configurability. Previous versions of this package used to soft-depend on the npm packages.
 However, by integrating the properties panel it has been revealed, that including the styles did not work that well without hacky solutions.
-
-<br>
-So my intention is here to provide this package 'as-is' and that you only need to add this to your project as meteor package,
-add it as an autoform type to your schema and 'booom' you got the all in one bpmn-js modeler incl. properties panel out of the box.
-
-
-### Install
-
-In order to install this package, you also need to install some npm packages:
-
-- simpl-schema (WHich you need to use with autoForm anyway)
-- bpmn-js (The bpmn-io modeler's core package)
-- diagram-js (mainly required to import fonts and styles for the modeler)
-- matches-selector (the bpmn modeler throws an error if this is not installed)
-
-Uses Bootstrap 3 classes.
-
-**Procedure:**
-
-```bash
-meteor add jkuester:autoform-bpmn
-```
-
-**Include in Schema:**
-
-
-```javascript
-import SimpleSchema from 'simpl-schema';
-const bpmnSchema = new SimpleSchema({
-    workflowData:{
-        autoform:{
-            afInputField:{
-                type:'bpmn',
-            }
-        }
-    }
-})
-```
 

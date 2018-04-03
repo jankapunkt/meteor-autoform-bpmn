@@ -2,9 +2,9 @@ import { _ } from 'meteor/underscore';
 import { Template } from 'meteor/templating';
 import { Blaze } from 'meteor/blaze';
 import { Tracker } from 'meteor/tracker';
-import { assert, chai } from 'meteor/practicalmeteor:chai';
+import { assert } from 'meteor/practicalmeteor:chai';
 
-//import 'meteor/jkuester:autoform-bpmn';
+// import 'meteor/jkuester:autoform-bpmn';
 
 // the test helpers, you know them
 // from the Meteor testing guide
@@ -29,7 +29,6 @@ const withRenderedTemplate = function withRenderedTemplate(template, data, callb
 };
 
 describe('autoform-bpmn', function () {
-
   beforeEach(function () {
     Template.registerHelper('_', key => key);
   });
@@ -40,17 +39,16 @@ describe('autoform-bpmn', function () {
 
 
   it('renders correctly with simple data', function () {
-
     const data = {
       atts: {
-        ['data-schema-key']: 'workflowData',
+        'data-schema-key': 'workflowData',
       },
-      value: undefined
+      value: undefined,
     };
 
-    withRenderedTemplate('afBpmn', data, el => {
+    withRenderedTemplate('afBpmn', data, (el) => {
       const template = $(el);
-      chai.assert.equal(template.find('djs-container').length, 1);
+      assert.equal(template.find('djs-container').length, 1);
     });
   });
 });

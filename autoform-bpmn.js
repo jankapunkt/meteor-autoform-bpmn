@@ -29,7 +29,7 @@ AutoForm.addInputType('bpmn', {
 });
 
 
-export const Utils = {
+const Utils = {
 
   modeler: null,
   canvas: null,
@@ -83,20 +83,22 @@ export const Utils = {
 
 const onElementClick = function (event) {
   const instance = this; // because we bind instance to this context
-  const element = event.element;
-  const businessObject = element.businessObject;
+  const { element } = event;
+  const { businessObject } = element;
   instance.currentTarget.set(businessObject);
 };
 
 Template.afBpmn.onCreated(function () {
-  const uploadSupported = window.File && window.FileReader && window.FileList && window.Blob;
+  // TODO add upload button and use this flag to indicate upload capabilities
+  // const uploadSupported = window.File && window.FileReader && window.FileList && window.Blob;
 
   const instance = this;
   instance.modelerLoaded = new ReactiveVar(false);
   instance.loadComplete = new ReactiveVar(false);
   instance.saving = new ReactiveVar(false);
   instance.dataModel = new ReactiveVar(this.data.value);
-  instance.model = new ReactiveVar(instance.data.value || Utils.createProcess(this.data.title || Random.id()));
+  instance.model = new ReactiveVar(instance.data.value ||
+    Utils.createProcess(this.data.title || Random.id()));
   instance.currentTarget = new ReactiveVar(false);
 
   const { atts } = this.data;
@@ -120,8 +122,10 @@ Template.afBpmn.onCreated(function () {
 });
 
 Template.afBpmn.onRendered(function () {
-  if (!this._rendered) {
-    this._rendered = true;
+  const instance = this;
+
+  if (!instance._rendered) {
+    instance._rendered = true;
 
     Utils.canvas = $('#af-bpmn-canvas');
     Utils.container = $('#af-bpmn-drop-zone');
@@ -144,8 +148,7 @@ Template.afBpmn.onRendered(function () {
     });
 
 
-    const exportArtifacts = _.debounce(function (evt) {
-
+    const exportArtifacts = _.debounce(function (/* evt */) {
       Utils.saveSVG(function(err, svg) {
         Utils.setEncoded(downloadSvgLink, 'diagram.svg', err ? null : svg);
       });
@@ -186,20 +189,20 @@ Template.afBpmn.helpers({
   },
   saving() {
     return Template.instance().saving.get();
-  }
+  },
 });
 
 
 Template.afBpmn.events({
 
-  'submit'(event, instance) {
+  'submit'(event) {
     event.preventDefault();
   },
 
 
   'change #af-bpmn-file-upload'(event, templateInstance) {
     const target = $('#af-bpmn-file-upload').get(0);
-    const files = target.files;
+    const { files } = target;
     if (files && files[0]) {
       const file = files[0];
       const reader = new FileReader();
@@ -207,7 +210,7 @@ Template.afBpmn.events({
       // Closure to capture the file information.
       reader.onloadend = function (result) {
         if (result && result.currentTarget && result.currentTarget.result) {
-          Utils.modeler.importXML(result.currentTarget.result, function (err, res) {
+          Utils.modeler.importXML(result.currentTarget.result, function (err) {
             if (err) Utils.modeler.importXML(templateInstance.dataModel.get());
             // else notify
           });
@@ -226,10 +229,10 @@ Template.afBpmn.events({
       if (res) {
         $('#af-bpmn-model-input').val(res);
         templateInstance.model.set(res);
-        setTimeout(()=>{
+        setTimeout(() => {
           templateInstance.saving.set(false);
         }, 500);
       }
     });
-  }
+  },
 });

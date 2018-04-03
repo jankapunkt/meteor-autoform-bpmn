@@ -1,6 +1,6 @@
 Package.describe({
   name: 'jkuester:autoform-bpmn',
-  version: '0.1.0',
+  version: '0.1.1',
   // Brief, one-line summary of the package.
   summary: 'Integrate the bpmn-js (bpmn.io) modeler into autoform.',
   // URL to the Git repository containing the source code for this package.
@@ -32,9 +32,20 @@ Package.onUse(function (api) {
 
   api.addAssets([
     '.npm/package/node_modules/bpmn-js-properties-panel/styles/config.json',
+    '.npm/package/node_modules/camunda-bpmn-moddle/resources/camunda.json',
   ], 'client');
 
   api.addFiles([
+    // diagram-js
+    '.npm/package/node_modules/diagram-js/assets/diagram-js.css',
+    '.npm/package/node_modules/bpmn-js/dist/assets/diagram-js.css',
+    '.npm/package/node_modules/bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css',
+
+    // bpmn-js
+    '.npm/package/node_modules/bpmn-js/lib/Modeler.js',
+
+    // PROPERTIES PANEL
+    '.npm/package/node_modules/bpmn-js-properties-panel/lib/provider/camunda/index.js',
     '.npm/package/node_modules/bpmn-js-properties-panel/styles/_mixins.less',
     '.npm/package/node_modules/bpmn-js-properties-panel/styles/_variables.less',
     '.npm/package/node_modules/bpmn-js-properties-panel/styles/groups.less',
