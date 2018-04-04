@@ -6,11 +6,16 @@
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
 </div>
 
+
 ### About
 
 This packages wraps the [bpmn-js](https://github.com/bpmn-io/bpmn-js) modeler and [bpmn-jsproperties-panel](https://github.com/bpmn-io/bpmn-js-properties-panel) into an "out-of-the-box extension" for [aldeed:autoform](https://github.com/aldeed/meteor-autoform).
 "Out-of-the-box extension" means, that it saves the modeled bpmn xml as xml-string into the specified field without any initial configuration required.
 The modeler allows you to set the camunda moddle options, so that your autoform lets you create camunda compatible bpmn process definitions.
+
+### Demo
+
+There is a minimal [DEMO project](https://github.com/jankapunkt/meteor-autoform-bpmn-example) that shows this extension in use. You can clone it and just run it as a Meteor app.
 
 ### Requirements
 
