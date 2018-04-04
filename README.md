@@ -1,6 +1,10 @@
-<h1 class='text-align:center'>Autoform BPMN Extension</h1>
-<p class='text-align: center'>Bringing the power of the bpmn-js modeler to your AutoForm</p>
+<h1 align="center">Autoform BPMN Extension</h1>
+<p align="center">Bringing the power of the bpmn-js modeler to your AutoForm</p>
 <hr>
+<div align="center">
+[![Build Status](https://travis-ci.org/jankapunkt/meteor-autoform-bpmn.svg?branch=master)](https://travis-ci.org/jankapunkt/meteor-autoform-bpmn)
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
+</div>
 
 ### About
 
