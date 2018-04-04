@@ -3,12 +3,11 @@ import { Random } from 'meteor/random';
 import { ReactiveVar } from 'meteor/reactive-var';
 import { $ } from 'meteor/jquery';
 
-import 'diagram-js/assets/diagram-js.css';
+//import 'diagram-js/assets/diagram-js.css';
 import 'bpmn-js/dist/assets/diagram-js.css';
 import 'bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css';
 
 import './autoform-bpmn.less';
-import './autoform-bpmn-main.css';
 
 
 const BpmnModeler = require('bpmn-js/lib/Modeler');
@@ -33,6 +32,7 @@ const Utils = {
 
   modeler: null,
   canvas: null,
+  propertiesParent: null,
   container: null,
 
   createProcess (title) {
@@ -129,6 +129,7 @@ Template.afBpmn.onRendered(function () {
 
     Utils.canvas = $('#af-bpmn-canvas');
     Utils.container = $('#af-bpmn-drop-zone');
+    Utils.propertiesParent = $('#af-bpmn-properties-panel');
     const downloadLink = $('#af-bpmn-download-diagram');
     const downloadSvgLink = $('#af-bpmn-download-svg');
 
@@ -139,7 +140,7 @@ Template.afBpmn.onRendered(function () {
         propertiesProviderModule,
       ],
       propertiesPanel: {
-        parent: '#af-bpmn-properties-panel',
+        parent: Utils.propertiesParent,
       },
       // make camunda prefix known for import, editing and export
       moddleExtensions: {
@@ -161,7 +162,9 @@ Template.afBpmn.onRendered(function () {
     }, 500);
 
     Utils.modeler.on('commandStack.changed', exportArtifacts);
+  }
 
+  if (Utils.canvas && Utils.container && Utils.propertiesParent && !!$('.bpp-properties-panel')[0]) {
     this.modelerLoaded.set(true);
   }
 });
@@ -171,7 +174,8 @@ Template.afBpmn.helpers({
     return Template.instance().key.get();
   },
   loadComplete() {
-    return Template.instance().loadComplete.get();
+    return Template.instance().loadComplete.get() &&
+      Template.instance().loadComplete.get();
   },
   dataModel() {
     const model = Template.instance().dataModel.get();

@@ -1,11 +1,11 @@
 <template name="afBpmn">
 
-
 		{{#unless loadComplete}}
 			<div id="af-bpmn-loading well well-lg">
 				<i class="fa fa-spinner fa-pulse"></i> Loading data
 			</div>
 		{{/unless}}
+
 		<div class="content" id="af-bpmn-drop-zone">
 			<div class="message intro">
 				<div class="note">
@@ -53,6 +53,5 @@
 
 	<!-- autoform related -->
 	<input type="hidden" id="af-bpmn-model-input" data-schema-key="{{dataSchemaKey}}" />
-	<input type="hidden" id="af-bpmn-reactivity-enforcer" value="{{dataModel}}" />
 </template>
 

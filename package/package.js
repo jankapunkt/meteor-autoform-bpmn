@@ -33,17 +33,17 @@ Package.onUse(function (api) {
   api.addAssets([
     '.npm/package/node_modules/bpmn-js-properties-panel/styles/config.json',
     '.npm/package/node_modules/camunda-bpmn-moddle/resources/camunda.json',
+    // lOCAL
+    'autoform-bpmn.less',
   ], 'client');
 
   api.addFiles([
     // diagram-js
-    //'.npm/package/node_modules/diagram-js/assets/diagram-js.css',
-    //'.npm/package/node_modules/bpmn-js/dist/assets/diagram-js.css',
-    //'.npm/package/node_modules/bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css',
+    // '.npm/package/node_modules/diagram-js/assets/diagram-js.css',
+    '.npm/package/node_modules/bpmn-js/dist/assets/diagram-js.css',
+    '.npm/package/node_modules/bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css',
 
     // bpmn-js
-    '.npm/package/node_modules/bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css',
-    '.npm/package/node_modules/bpmn-js/dist/assets/diagram-js.css',
     '.npm/package/node_modules/bpmn-js/lib/Modeler.js',
 
     // PROPERTIES PANEL
@@ -55,16 +55,17 @@ Package.onUse(function (api) {
     '.npm/package/node_modules/bpmn-js-properties-panel/styles/listeners.less',
     '.npm/package/node_modules/bpmn-js-properties-panel/styles/tabs.less',
     '.npm/package/node_modules/bpmn-js-properties-panel/styles/properties.less',
+
   ], 'client', { isImport: true });
 
   api.addFiles([
-    'autoform-bpmn.less',
-    'autoform-bpmn-main.css',
+    //'autoform-bpmn-main.css',
     'autoform-bpmn.html',
     'autoform-bpmn.js',
   ], 'client');
 });
 
+/*
 Package.onTest(function (api) {
   api.use('ecmascript');
   api.use('underscore');
@@ -77,3 +78,4 @@ Package.onTest(function (api) {
   api.use('jkuester:autoform-bpmn');
   api.mainModule('autoform-bpmn-tests.js', 'client');
 });
+*/
