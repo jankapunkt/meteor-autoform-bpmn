@@ -1,6 +1,6 @@
 Package.describe({
   name: 'jkuester:autoform-bpmn',
-  version: '0.1.1',
+  version: '0.1.2',
   // Brief, one-line summary of the package.
   summary: 'Integrate the bpmn-js (bpmn.io) modeler into autoform.',
   // URL to the Git repository containing the source code for this package.
@@ -37,11 +37,13 @@ Package.onUse(function (api) {
 
   api.addFiles([
     // diagram-js
-    '.npm/package/node_modules/diagram-js/assets/diagram-js.css',
-    '.npm/package/node_modules/bpmn-js/dist/assets/diagram-js.css',
-    '.npm/package/node_modules/bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css',
+    //'.npm/package/node_modules/diagram-js/assets/diagram-js.css',
+    //'.npm/package/node_modules/bpmn-js/dist/assets/diagram-js.css',
+    //'.npm/package/node_modules/bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css',
 
     // bpmn-js
+    '.npm/package/node_modules/bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css',
+    '.npm/package/node_modules/bpmn-js/dist/assets/diagram-js.css',
     '.npm/package/node_modules/bpmn-js/lib/Modeler.js',
 
     // PROPERTIES PANEL
@@ -56,9 +58,6 @@ Package.onUse(function (api) {
   ], 'client', { isImport: true });
 
   api.addFiles([
-    '.npm/package/node_modules/diagram-js/assets/diagram-js.css',
-    '.npm/package/node_modules/bpmn-js/dist/assets/diagram-js.css',
-    '.npm/package/node_modules/bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css',
     'autoform-bpmn.less',
     'autoform-bpmn-main.css',
     'autoform-bpmn.html',
@@ -74,6 +73,7 @@ Package.onTest(function (api) {
   api.use('blaze@2.0.0');
   api.use('meteortesting:mocha');
   api.use('practicalmeteor:chai');
+  api.use('jkuester:autoform-testhelper');
   api.use('jkuester:autoform-bpmn');
   api.mainModule('autoform-bpmn-tests.js', 'client');
 });
