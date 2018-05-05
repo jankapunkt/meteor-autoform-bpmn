@@ -1,6 +1,6 @@
 Package.describe({
   name: 'jkuester:autoform-bpmn',
-  version: '0.1.2',
+  version: '0.1.3',
   // Brief, one-line summary of the package.
   summary: 'Integrate the bpmn-js (bpmn.io) modeler into autoform.',
   // URL to the Git repository containing the source code for this package.

@@ -20,6 +20,10 @@ This packages wraps the [bpmn-js](https://github.com/bpmn-io/bpmn-js) modeler an
 "Out-of-the-box extension" means, that it saves the modeled bpmn xml as xml-string into the specified field without any initial configuration required.
 The modeler allows you to set the camunda moddle options, so that your autoform lets you create camunda compatible bpmn process definitions.
 
+### NOTES
+
+- You need to click the save button before you submit your form. Otherwise there won't be no workflow being saved. Autosave is currently disabled as it kills the performance dramatically!
+
 ### Demo
 
 There is a minimal [DEMO project](https://github.com/jankapunkt/meteor-autoform-bpmn-example) that shows this extension in use. You can clone it and just run it as a Meteor app.

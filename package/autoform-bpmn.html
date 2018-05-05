@@ -1,57 +1,47 @@
 <template name="afBpmn">
 
-		{{#unless loadComplete}}
-			<div id="af-bpmn-loading well well-lg">
-				<i class="fa fa-spinner fa-pulse"></i> Loading data
-			</div>
-		{{/unless}}
+    {{#unless loadComplete}}
+        <div id="af-bpmn-loading well well-lg">
+            <i class="fa fa-spinner fa-pulse"></i> Loading data
+        </div>
+    {{/unless}}
 
-		<div class="content" id="af-bpmn-drop-zone">
-			<div class="message intro">
-				<div class="note">
-					Drop BPMN diagram from your desktop or <a id="af-bpmn-create-diagram" href>create a new diagram</a> to
-					get started.
-				</div>
-			</div>
+    <div class="content" id="af-bpmn-drop-zone">
+        <div class="message intro">
+            <div class="note">
+                Drop BPMN diagram from your desktop or <a id="af-bpmn-create-diagram" href>create a new diagram</a> to
+                get started.
+            </div>
+        </div>
 
-			<div class="message error">
-				<div class="note">
-					<p>Ooops, we could not display the BPMN 2.0 diagram.</p>
+        <div class="message error">
+            <div class="note">
+                <p>Ooops, we could not display the BPMN 2.0 diagram.</p>
 
-					<div class="details">
-						<span>cause of the problem</span>
-						<pre></pre>
-					</div>
-				</div>
-			</div>
+                <div class="details">
+                    <span>cause of the problem</span>
+                    <pre></pre>
+                </div>
+            </div>
+        </div>
 
-			<div class="canvas" id="af-bpmn-canvas"></div>
-			<div class="properties-panel-parent" id="af-bpmn-properties-panel"></div>
+        <div class="canvas" id="af-bpmn-canvas"></div>
+        <div class="properties-panel-parent" id="af-bpmn-properties-panel"></div>
+    </div>
+    <br>
+    <div class="af-bpmn-buttons pull-right clearfix">
+        <a id="af-bpmn-download-diagram" href class="btn btn-sm btn-default" title="Download BPMN">
+            <i class="fa fa-fw fa-download"></i> Download BPMN
+        </a>
+        <a id="af-bpmn-download-svg" href class="btn btn-sm  btn-default" title="Download SVG">
+            <i class="fa fa-fw fa-download"></i> Download SVG
+        </a>
+        <a id="af-bpmn-save-diagram" href class="btn btn-sm  btn-default" title="Save">
+            <i class="fa fa-fw fa-save"></i> {{#if saving}}Saving{{else}}Save{{/if}}
+        </a>
+    </div>
 
-
-		<ul class="buttons">
-			<li>
-				download
-			</li>
-			<li>
-				<a id="af-bpmn-download-diagram" href title="download BPMN diagram">
-					BPMN diagram
-				</a>
-			</li>
-			<li>
-				<a id="af-bpmn-download-svg" href title="download as SVG image">
-					SVG image
-				</a>
-			</li>
-			<li>
-				<a id="af-bpmn-save-diagram" href title="Save diagram">
-					{{#if saving}}Saving{{else}}Save{{/if}}
-				</a>
-			</li>
-		</ul>
-		</div>
-
-	<!-- autoform related -->
-	<input type="hidden" id="af-bpmn-model-input" data-schema-key="{{dataSchemaKey}}" />
+    <!-- autoform related -->
+    <input type="hidden" id="af-bpmn-model-input" data-schema-key="{{dataSchemaKey}}"/>
 </template>
 

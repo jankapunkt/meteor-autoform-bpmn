@@ -2,18 +2,16 @@ import { Template } from 'meteor/templating';
 import { Random } from 'meteor/random';
 import { ReactiveVar } from 'meteor/reactive-var';
 import { $ } from 'meteor/jquery';
+import BpmnModeler from 'bpmn-js/lib/Modeler';
+import propertiesPanelModule from 'bpmn-js-properties-panel';
+import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda';
+import camundaModdleDescriptor from  'camunda-bpmn-moddle/resources/camunda';
 
 //import 'diagram-js/assets/diagram-js.css';
 import 'bpmn-js/dist/assets/diagram-js.css';
 import 'bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css';
-
 import './autoform-bpmn.less';
 
-
-const BpmnModeler = require('bpmn-js/lib/Modeler');
-const propertiesPanelModule = require('bpmn-js-properties-panel');
-const propertiesProviderModule = require('bpmn-js-properties-panel/lib/provider/camunda');
-const camundaModdleDescriptor = require('camunda-bpmn-moddle/resources/camunda');
 
 
 // extend autoform with bpmn modeler
