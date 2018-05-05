@@ -20,8 +20,7 @@ shell-server@0.3.1            # Server-side component of the `meteor shell` comm
 autopublish@1.0.7             # Publish all data to the clients (for prototyping)
 insecure@1.0.7                # Allow all DB writes from clients (for prototyping)
 
-
-jkuester:autoform-bpmn
-
-practicalmeteor:chai
+lmieulet:meteor-coverage@2.0.2
 meteortesting:mocha
+practicalmeteor:chai
+jkuester:autoform-bpmn
