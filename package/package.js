@@ -60,22 +60,10 @@ Package.onUse(function (api) {
 
   api.addFiles([
     //'autoform-bpmn-main.css',
+    'autoform-bpmn-utils.js',
     'autoform-bpmn.html',
     'autoform-bpmn.js',
   ], 'client');
-});
 
-/*
-Package.onTest(function (api) {
-  api.use('ecmascript');
-  api.use('underscore');
-  api.use('tracker');
-  api.use('templating@1.3.2');
-  api.use('blaze@2.0.0');
-  api.use('meteortesting:mocha');
-  api.use('practicalmeteor:chai');
-  api.use('jkuester:autoform-testhelper');
-  api.use('jkuester:autoform-bpmn');
-  api.mainModule('autoform-bpmn-tests.js', 'client');
+  api.export('BpmnModelerUtils')
 });
-*/

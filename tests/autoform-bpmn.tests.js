@@ -3,16 +3,13 @@ import { Template } from 'meteor/templating';
 import { Blaze } from 'meteor/blaze';
 import { Tracker } from 'meteor/tracker';
 import { assert } from 'meteor/practicalmeteor:chai';
+import {Random} from 'meteor/random';
 
 import SimpleSchema from 'simpl-schema';
-
 SimpleSchema.extendOptions(['autoform']);
 
-
-import 'meteor/jkuester:autoform-bpmn';
-
-
-import {pizza} from "./pizza";
+import {BpmnModelerUtils as Utils} from 'meteor/jkuester:autoform-bpmn';
+import { pizza } from "./pizza";
 
 // the test helpers, you know them
 // from the Meteor testing guide
@@ -37,6 +34,8 @@ const withRenderedTemplate = function withRenderedTemplate(template, data, callb
     }, 250);
   });
 };
+
+const coverageUrlId = 'afBbpmn-coverage-target'; // used as target for new tab
 
 describe('autoform-bpmn', function () {
 
@@ -66,6 +65,31 @@ describe('autoform-bpmn', function () {
 
   };
 
+  describe('utils', function () {
+
+    it('createProcess', function () {
+      const randomId = Random.id();
+      const processXml = Utils.createProcess(randomId);
+      assert.isAbove(processXml.indexOf(randomId), -1);
+    });
+
+    it ('setEncoded', function () {
+      assert.fail();
+    });
+
+    it('saveDiagram', function () {
+      assert.fail();
+    });
+
+    it('saveSVG', function () {
+      assert.fail();
+    });
+
+    it('onElementClick', function () {
+      assert.fail();
+    })  ;
+  });
+
   describe('default render', function () {
 
     const data = {
@@ -76,7 +100,7 @@ describe('autoform-bpmn', function () {
       value: undefined,
     };
 
-    it ('renders the hidden inputs', function (done) {
+    it('renders the hidden inputs', function (done) {
       withRenderedTemplate('afBpmn', data, (el) => {
         const hiddenInput = $($(el).find('#af-bpmn-model-input')[0]);
         assert.equal(hiddenInput.attr('type'), 'hidden');
@@ -171,7 +195,7 @@ describe('autoform-bpmn', function () {
       });
     });
 
-    it ('renders action buttons', function (done) {
+    it('renders action buttons', function (done) {
       withRenderedTemplate('afBpmn', data, (el) => {
         const template = $(el);
         const rendersAll = getMultipleIsRendered(template);
@@ -187,7 +211,7 @@ describe('autoform-bpmn', function () {
       });
     })
 
-    it ('renders a single process element (startevent) by default', function (done) {
+    it('renders a single process element (startevent) by default', function (done) {
       withRenderedTemplate('afBpmn', data, (el) => {
         const svgRoot = $($(el).find('svg')[0]);
         const rendersAll = getMultipleIsRendered(svgRoot);
@@ -222,7 +246,7 @@ describe('autoform-bpmn', function () {
       value: pizza,
     };
 
-    it ('renders an imported process diagram', function (done) {
+    it('renders an imported process diagram', function (done) {
       withRenderedTemplate('afBpmn', data, (el) => {
         const svgRoot = $($(el).find('svg')[0]);
         const rendersAll = getMultipleIsRendered(svgRoot);
@@ -278,6 +302,13 @@ describe('autoform-bpmn', function () {
         done();
       });
     })
+  });
+
+  after(function () {
+    Meteor.sendCoverage(function (stats, err) {
+      console.log(stats, err);
+      window.open(Meteor.absoluteUrl()+"/coverage", coverageUrlId)
+    });
   });
 
 });
