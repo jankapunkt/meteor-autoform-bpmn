@@ -7,10 +7,10 @@ import { Random } from 'meteor/random';
 
 import SimpleSchema from 'simpl-schema';
 
-SimpleSchema.extendOptions(['autoform']);
-
 import { BpmnModelerUtils as Utils } from 'meteor/jkuester:autoform-bpmn';
-import { pizza } from "./pizza";
+import { pizza } from './pizza';
+
+SimpleSchema.extendOptions(['autoform']);
 
 // the test helpers, you know them
 // from the Meteor testing guide
@@ -39,7 +39,6 @@ const withRenderedTemplate = function withRenderedTemplate(template, data, callb
 const coverageUrlId = 'afBbpmn-coverage-target'; // used as target for new tab
 
 describe('autoform-bpmn', function () {
-
   beforeEach(function () {
     Template.registerHelper('_', key => key);
   });
@@ -59,15 +58,13 @@ describe('autoform-bpmn', function () {
     const isRendered = getIsRendered(template);
 
     return function mutlipleIsRendered(arr, count) {
-      arr.forEach(el => {
+      arr.forEach((el) => {
         isRendered(el, count);
-      })
-    }
-
+      });
+    };
   };
 
   describe('utils', function () {
-
     it('createProcess', function () {
       const randomId = Random.id();
       const processXml = Utils.createProcess(randomId);
@@ -89,7 +86,7 @@ describe('autoform-bpmn', function () {
 
     it('setEncoded (no data)', function () {
       const disabledLink = $('<a></a>');
-      Utils.setEncoded(disabledLink, "", null);
+      Utils.setEncoded(disabledLink, '', null);
       assert.equal(disabledLink.prop('disabled'), true);
       assert.isUndefined(disabledLink.attr('download'));
       assert.isUndefined(disabledLink.attr('href'));
@@ -98,9 +95,9 @@ describe('autoform-bpmn', function () {
     it('saveDiagram', function (done) {
       Utils.modeler = {
         saveXML(obj, cb) {
-          assert.isTrue(obj.format)
+          assert.isTrue(obj.format);
           cb();
-        }
+        },
       };
       Utils.saveDiagram(() => {
         done();
@@ -111,7 +108,7 @@ describe('autoform-bpmn', function () {
       Utils.modeler = {
         saveSVG(cb) {
           cb();
-        }
+        },
       };
       Utils.saveSVG(() => {
         done();
@@ -124,15 +121,15 @@ describe('autoform-bpmn', function () {
           value: null,
           set(value) {
             this.value = value;
-          }
-        }
+          },
+        },
       };
       const id = Random.id();
       const bound = Utils.onElementClick.bind(instance);
       bound({
         element: {
           businessObject: id,
-        }
+        },
       });
 
       assert.equal(instance.currentTarget.value, id);
@@ -140,7 +137,6 @@ describe('autoform-bpmn', function () {
   });
 
   describe('default render', function () {
-
     const data = {
       atts: {
         'data-schema-key': 'workflowData',
@@ -172,7 +168,7 @@ describe('autoform-bpmn', function () {
         rendersAll(containers, 1);
 
         // svg content
-        //isRendered('svg', 1);
+        // isRendered('svg', 1);
         done();
       });
     });
@@ -221,7 +217,7 @@ describe('autoform-bpmn', function () {
 
         done();
       });
-    })
+    });
 
     it('renders the camunda moddle related properties as tab sections', function (done) {
       withRenderedTemplate('afBpmn', data, (el) => {
@@ -258,7 +254,7 @@ describe('autoform-bpmn', function () {
 
         done();
       });
-    })
+    });
 
     it('renders a single process element (startevent) by default', function (done) {
       withRenderedTemplate('afBpmn', data, (el) => {
@@ -281,13 +277,10 @@ describe('autoform-bpmn', function () {
 
         done();
       });
-    })
-
+    });
   });
 
   describe('render with existing BPMN model', function () {
-
-
     const data = {
       atts: {
         'data-schema-key': 'workflowData',
@@ -350,14 +343,13 @@ describe('autoform-bpmn', function () {
 
         done();
       });
-    })
+    });
   });
 
   after(function () {
     Meteor.sendCoverage(function (stats, err) {
       console.warn(stats, err);
-      window.open(Meteor.absoluteUrl() + "/coverage", coverageUrlId)
+      window.open(`${Meteor.absoluteUrl()}/coverage`, coverageUrlId);
     });
   });
-
 });

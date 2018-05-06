@@ -8,14 +8,14 @@ import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camu
 import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda';
 
 
-import {Utils} from "./autoform-bpmn-utils";
+import { Utils } from './autoform-bpmn-utils'; // expose it to make it testable
 
-BpmnModelerUtils = Utils; // expose it to make it testable
-
-//import 'diagram-js/assets/diagram-js.css';
+// import 'diagram-js/assets/diagram-js.css';
 import 'bpmn-js/dist/assets/diagram-js.css';
 import 'bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css';
 import './autoform-bpmn.less';
+
+BpmnModelerUtils = Utils;
 
 
 // extend autoform with bpmn modeler
@@ -92,7 +92,6 @@ Template.afBpmn.onRendered(function () {
 
 
     Utils.modeler.on('commandStack.changed', _.debounce(function (/* evt */) {
-
       Utils.saveSVG(function (err, svg) {
         Utils.setEncoded(downloadSvgLink, 'diagram.svg', err ? null : svg);
       });
@@ -139,8 +138,7 @@ Template.afBpmn.events({
 
       // Closure to capture the file information.
       reader.onloadend = function (result) {
-
-        const  importXml = result && result.currentTarget && result.currentTarget.result;
+        const importXml = result && result.currentTarget && result.currentTarget.result;
         if (importXml) {
           Utils.modeler.importXML(importXml, function (err, res) {
             if (err) Utils.modeler.importXML(templateInstance.model.get());

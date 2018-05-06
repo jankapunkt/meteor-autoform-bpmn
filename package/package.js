@@ -59,11 +59,11 @@ Package.onUse(function (api) {
   ], 'client', { isImport: true });
 
   api.addFiles([
-    //'autoform-bpmn-main.css',
+    // 'autoform-bpmn-main.css',
     'autoform-bpmn-utils.js',
     'autoform-bpmn.html',
     'autoform-bpmn.js',
   ], 'client');
 
-  api.export('BpmnModelerUtils')
+  api.export('BpmnModelerUtils');
 });
