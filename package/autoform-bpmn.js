@@ -7,15 +7,14 @@ import propertiesPanelModule from 'bpmn-js-properties-panel';
 import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda';
 import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda';
 
-
-import { Utils } from './autoform-bpmn-utils'; // expose it to make it testable
-
 // import 'diagram-js/assets/diagram-js.css';
 import 'bpmn-js/dist/assets/diagram-js.css';
 import 'bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css';
+
+import { Utils } from './autoform-bpmn-utils'; // expose it to make it testable
 import './autoform-bpmn.less';
 
-BpmnModelerUtils = Utils;
+BpmnModelerUtils = Utils; // eslint-disable-line no-undef
 
 
 // extend autoform with bpmn modeler
@@ -38,7 +37,8 @@ Template.afBpmn.onCreated(function () {
   instance.loadComplete = new ReactiveVar(false);
   instance.saving = new ReactiveVar(false);
 
-  instance.model = new ReactiveVar(instance.data.value || Utils.createProcess(this.data.title || Random.id()));
+  instance.model = new ReactiveVar(instance.data.value ||
+    Utils.createProcess(this.data.title || Random.id()));
 
   instance.currentTarget = new ReactiveVar(false);
 

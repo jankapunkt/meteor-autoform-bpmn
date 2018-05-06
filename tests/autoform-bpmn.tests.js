@@ -347,8 +347,7 @@ describe('autoform-bpmn', function () {
   });
 
   after(function () {
-    Meteor.sendCoverage(function (stats, err) {
-      console.warn(stats, err);
+    Meteor.sendCoverage(function (/* stats, err */) {
       window.open(`${Meteor.absoluteUrl()}/coverage`, coverageUrlId);
     });
   });
