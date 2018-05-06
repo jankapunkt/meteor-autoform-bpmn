@@ -25,4 +25,5 @@ install:
   - ./install.sh
 
 script:
+  - cd tests
   - meteor npm run test
