@@ -32,8 +32,8 @@ export const Utils = {
   },
 
   setEncoded(link, name, data) {
-    const encodedData = encodeURIComponent(data);
     if (data) {
+      const encodedData = encodeURIComponent(data);
       link.prop('disabled', false).attr({
         href: `data:application/bpmn20-xml;charset=UTF-8,${encodedData}`,
         download: name,
@@ -47,7 +47,8 @@ export const Utils = {
       done(err, xml);
     });
   },
-  saveSVG() {
+  saveSVG(done) {
+    Utils.modeler.saveSVG(done);
   },
 
   onElementClick(event) {
@@ -56,18 +57,4 @@ export const Utils = {
     const { businessObject } = element;
     instance.currentTarget.set(businessObject);
   },
-
-  exportArtifacts({downloadSvgLink, downloadLink}) {
-    return _.debounce(function (/* evt */) {
-      Utils.saveSVG(function (err, svg) {
-        Utils.setEncoded(downloadSvgLink, 'diagram.svg', err ? null : svg);
-      });
-
-      Utils.saveDiagram(function (err, xml) {
-        Utils.setEncoded(downloadLink, 'diagram.bpmn', err ? null : xml);
-      });
-
-      return true;
-    }, 500);
-  }
 };

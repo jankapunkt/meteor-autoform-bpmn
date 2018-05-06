@@ -89,7 +89,17 @@ Template.afBpmn.onRendered(function () {
     });
 
 
-    Utils.modeler.on('commandStack.changed', Utils.exportArtifacts({downloadSvgLink, downloadLink}));
+    Utils.modeler.on('commandStack.changed', _.debounce(function (/* evt */) {
+      Utils.saveSVG(function (err, svg) {
+        Utils.setEncoded(downloadSvgLink, 'diagram.svg', err ? null : svg);
+      });
+
+      Utils.saveDiagram(function (err, xml) {
+        Utils.setEncoded(downloadLink, 'diagram.bpmn', err ? null : xml);
+      });
+
+      return true;
+    }, 500));
   }
 
   if (Utils.canvas && Utils.container && Utils.propertiesParent && !!$('.bpp-properties-panel')[0]) {

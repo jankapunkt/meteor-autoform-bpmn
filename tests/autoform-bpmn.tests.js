@@ -3,12 +3,13 @@ import { Template } from 'meteor/templating';
 import { Blaze } from 'meteor/blaze';
 import { Tracker } from 'meteor/tracker';
 import { assert } from 'meteor/practicalmeteor:chai';
-import {Random} from 'meteor/random';
+import { Random } from 'meteor/random';
 
 import SimpleSchema from 'simpl-schema';
+
 SimpleSchema.extendOptions(['autoform']);
 
-import {BpmnModelerUtils as Utils} from 'meteor/jkuester:autoform-bpmn';
+import { BpmnModelerUtils as Utils } from 'meteor/jkuester:autoform-bpmn';
 import { pizza } from "./pizza";
 
 // the test helpers, you know them
@@ -73,21 +74,69 @@ describe('autoform-bpmn', function () {
       assert.isAbove(processXml.indexOf(randomId), -1);
     });
 
-    it ('setEncoded', function () {
-      assert.fail();
+    it('setEncoded (with data)', function () {
+      const randomId = Random.id();
+      const processXml = Utils.createProcess(randomId);
+      const encodedData = encodeURIComponent(processXml);
+      const enabledLink = $('<a>');
+      const enabledName = 'enabled_link';
+      Utils.setEncoded(enabledLink, enabledName, processXml);
+      assert.equal(enabledLink.prop('disabled'), false);
+      assert.equal(enabledLink.attr('download'), enabledName);
+      const href = enabledLink.attr('href');
+      assert.isAbove(href.indexOf(encodedData), -1);
     });
 
-    it('saveDiagram', function () {
-      assert.fail();
+    it('setEncoded (no data)', function () {
+      const disabledLink = $('<a></a>');
+      Utils.setEncoded(disabledLink, "", null);
+      assert.equal(disabledLink.prop('disabled'), true);
+      assert.isUndefined(disabledLink.attr('download'));
+      assert.isUndefined(disabledLink.attr('href'));
     });
 
-    it('saveSVG', function () {
-      assert.fail();
+    it('saveDiagram', function (done) {
+      Utils.modeler = {
+        saveXML(obj, cb) {
+          assert.isTrue(obj.format)
+          cb();
+        }
+      };
+      Utils.saveDiagram(() => {
+        done();
+      });
+    });
+
+    it('saveSVG', function (done) {
+      Utils.modeler = {
+        saveSVG(cb) {
+          cb();
+        }
+      };
+      Utils.saveSVG(() => {
+        done();
+      });
     });
 
     it('onElementClick', function () {
-      assert.fail();
-    })  ;
+      const instance = {
+        currentTarget: {
+          value: null,
+          set(value) {
+            this.value = value;
+          }
+        }
+      };
+      const id = Random.id();
+      const bound = Utils.onElementClick.bind(instance);
+      bound({
+        element: {
+          businessObject: id,
+        }
+      });
+
+      assert.equal(instance.currentTarget.value, id);
+    });
   });
 
   describe('default render', function () {
@@ -307,7 +356,7 @@ describe('autoform-bpmn', function () {
   after(function () {
     Meteor.sendCoverage(function (stats, err) {
       console.log(stats, err);
-      window.open(Meteor.absoluteUrl()+"/coverage", coverageUrlId)
+      window.open(Meteor.absoluteUrl() + "/coverage", coverageUrlId)
     });
   });
 
