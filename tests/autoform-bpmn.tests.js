@@ -252,7 +252,7 @@ describe('autoform-bpmn', function () {
         const buttons = [
           '#af-bpmn-download-diagram',
           '#af-bpmn-download-svg',
-          '#af-bpmn-save-diagram',
+          '#af-bpmn-file-upload',
         ];
         rendersAll(buttons, 1);
 

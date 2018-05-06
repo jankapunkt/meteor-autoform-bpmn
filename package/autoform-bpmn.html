@@ -30,18 +30,15 @@
     </div>
     <br>
     <div class="af-bpmn-buttons pull-right clearfix">
-        <label for="af-bpmn-file-upload" class="btn btn-default">
+        <label for="af-bpmn-file-upload" class="btn btn-sm btn-default">
             <i class="fa fa-fw fa-upload"></i> Import BPMN
         </label>
-        <input type="file" id="af-bpmn-file-upload" style="display: none" />
+        <input type="file" id="af-bpmn-file-upload" style="display: none"  accept=".bpmn,.bpmn20,.xml" />
         <a id="af-bpmn-download-diagram" href class="btn btn-sm btn-default" title="Download BPMN">
             <i class="fa fa-fw fa-download"></i> Download BPMN
         </a>
         <a id="af-bpmn-download-svg" href class="btn btn-sm  btn-default" title="Download SVG">
             <i class="fa fa-fw fa-download"></i> Download SVG
-        </a>
-        <a id="af-bpmn-save-diagram" href class="btn btn-sm  btn-default" title="Save">
-            <i class="fa fa-fw fa-save"></i> {{#if saving}}Saving{{else}}Save{{/if}}
         </a>
     </div>
 

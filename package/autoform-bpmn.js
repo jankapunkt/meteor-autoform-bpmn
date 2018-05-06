@@ -37,8 +37,9 @@ Template.afBpmn.onCreated(function () {
   instance.modelerLoaded = new ReactiveVar(false);
   instance.loadComplete = new ReactiveVar(false);
   instance.saving = new ReactiveVar(false);
-  instance.dataModel = new ReactiveVar(this.data.value);
+
   instance.model = new ReactiveVar(instance.data.value || Utils.createProcess(this.data.title || Random.id()));
+
   instance.currentTarget = new ReactiveVar(false);
 
   const { atts } = this.data;
@@ -55,6 +56,7 @@ Template.afBpmn.onCreated(function () {
         if (res) {
           Utils.container.removeClass('with-error').addClass('with-diagram');
           instance.loadComplete.set(true);
+          $('#af-bpmn-model-input').val(instance.model.get());
         }
       });
     }
@@ -90,11 +92,13 @@ Template.afBpmn.onRendered(function () {
 
 
     Utils.modeler.on('commandStack.changed', _.debounce(function (/* evt */) {
+
       Utils.saveSVG(function (err, svg) {
         Utils.setEncoded(downloadSvgLink, 'diagram.svg', err ? null : svg);
       });
 
       Utils.saveDiagram(function (err, xml) {
+        $('#af-bpmn-model-input').val(xml);
         Utils.setEncoded(downloadLink, 'diagram.bpmn', err ? null : xml);
       });
 
@@ -115,23 +119,6 @@ Template.afBpmn.helpers({
     return Template.instance().loadComplete.get() &&
       Template.instance().loadComplete.get();
   },
-  dataModel() {
-    const model = Template.instance().dataModel.get();
-    if (model !== this.value) {
-      Template.instance().dataModel.set(this.value);
-      Utils.modeler.importXML(this.value, function (err, res) {
-        if (res) {
-          Utils.modeler.get('canvas').zoom('fit-viewport');
-          Utils.container.removeClass('with-error').addClass('with-diagram');
-          this.loadComplete.set(true);
-        }
-      }.bind(Template.instance()));
-    }
-    return model;
-  },
-  saving() {
-    return Template.instance().saving.get();
-  },
 });
 
 
@@ -149,12 +136,15 @@ Template.afBpmn.events({
       const file = files[0];
       const reader = new FileReader();
 
+
       // Closure to capture the file information.
       reader.onloadend = function (result) {
-        if (result && result.currentTarget && result.currentTarget.result) {
-          Utils.modeler.importXML(result.currentTarget.result, function (err) {
-            if (err) Utils.modeler.importXML(templateInstance.dataModel.get());
-            // else notify
+
+        const  importXml = result && result.currentTarget && result.currentTarget.result;
+        if (importXml) {
+          Utils.modeler.importXML(importXml, function (err, res) {
+            if (err) Utils.modeler.importXML(templateInstance.model.get());
+            if (res) $('#af-bpmn-model-input').val(importXml);
           });
         }
       };
@@ -162,19 +152,5 @@ Template.afBpmn.events({
       // Read in the image file as a data URL.
       reader.readAsText(file);
     }
-  },
-
-  'click #af-bpmn-save-diagram'(event, templateInstance) {
-    event.preventDefault();
-    templateInstance.saving.set(true);
-    Utils.modeler.saveXML({ format: true }, (err, res) => {
-      if (res) {
-        $('#af-bpmn-model-input').val(res);
-        templateInstance.model.set(res);
-        setTimeout(() => {
-          templateInstance.saving.set(false);
-        }, 500);
-      }
-    });
   },
 });
