@@ -355,7 +355,7 @@ describe('autoform-bpmn', function () {
 
   after(function () {
     Meteor.sendCoverage(function (stats, err) {
-      console.log(stats, err);
+      console.warn(stats, err);
       window.open(Meteor.absoluteUrl() + "/coverage", coverageUrlId)
     });
   });

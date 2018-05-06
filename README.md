@@ -20,9 +20,21 @@ This packages wraps the [bpmn-js](https://github.com/bpmn-io/bpmn-js) modeler an
 "Out-of-the-box extension" means, that it saves the modeled bpmn xml as xml-string into the specified field without any initial configuration required.
 The modeler allows you to set the camunda moddle options, so that your autoform lets you create camunda compatible bpmn process definitions.
 
-### NOTES
+### Changelog
 
-- You need to click the save button before you submit your form. Otherwise there won't be no workflow being saved. Autosave is currently disabled as it kills the performance dramatically!
+**0.1.4** 
+
+- removed save button and update data model on commandstack.changed event
+- added file import
+- added svg export
+- extracted utils and added tests
+- added install.sh script
+
+**0.1.3**
+
+- moved button bar out of canvas
+- added code coverage to tests
+
 
 ### Demo
 
@@ -72,10 +84,10 @@ In the future there will be an autosave on `commandStack.change` which is basica
 Currently it uses the following versions:
 
 ```javascript
-"bpmn-js": "0.27.6",
-"bpmn-js-properties-panel": "0.22.1",
-"camunda-bpmn-moddle": "2.0.0",
-"diagram-js": "0.28.2",
+'bpmn-js':                  '0.27.6',
+'bpmn-js-properties-panel': '0.22.1',
+'camunda-bpmn-moddle':      '2.0.0',
+'diagram-js':               '0.28.2',
 ```
 
 ### Why using fixed Npm dependencies?
@@ -87,3 +99,6 @@ To comfort you as user this is all now wrapped up and you don't need to install 
 So the decision is usability over configurability. Previous versions of this package used to soft-depend on the npm packages.
 However, by integrating the properties panel it has been revealed, that including the styles did not work that well without hacky solutions.
 
+### License
+
+MIT License
