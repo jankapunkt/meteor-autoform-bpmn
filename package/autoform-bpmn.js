@@ -73,7 +73,7 @@ Template.afBpmn.onCreated(function () {
 Template.afBpmn.onRendered(function () {
   const instance = this;
   const disabled = instance.disabled.get()
-
+console.log("rendered", disabled)
   if (!instance._rendered) {
     instance._rendered = true;
 
@@ -111,12 +111,11 @@ Template.afBpmn.onRendered(function () {
 
       Utils.modeler.on('commandStack.changed', _.debounce(function (/* evt */) {
         Utils.saveSVG(function (err, svg) {
-          Utils.setEncoded(downloadSvgLink, 'diagram.svg', err ? null : svg);
+          console.log("svg", svg)
         });
 
         Utils.saveDiagram(function (err, xml) {
           $('#af-bpmn-model-input').val(xml);
-          Utils.setEncoded(downloadLink, 'diagram.bpmn', err ? null : xml);
         });
 
         return true;
@@ -150,12 +149,9 @@ Template.afBpmn.helpers({
 
 
 Template.afBpmn.events({
-
   'submit'(event) {
     event.preventDefault();
   },
-
-
   'change #af-bpmn-file-upload'(event, templateInstance) {
     const disabled = templateInstance.disabled.get()
     if (disabled) return
@@ -181,5 +177,21 @@ Template.afBpmn.events({
       // Read in the image file as a data URL.
       reader.readAsText(file);
     }
+  },
+  'click #af-bpmn-download-diagram'(event) {
+    event.preventDefault()
+    event.stopPropagation()
+
+    Utils.saveDiagram(function (err, xml) {
+      Utils.saveFile(' application/xml', 'diagram.bpmn', xml)
+    });
+  },
+  'click #af-bpmn-download-svg'(event) {
+    event.preventDefault()
+    event.stopPropagation()
+
+    Utils.saveSVG(function (err, svg) {
+      Utils.saveFile('image/svg+xml', 'diagram.svg', svg)
+    });
   },
 });
