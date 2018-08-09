@@ -22,6 +22,12 @@ The modeler allows you to set the camunda moddle options, so that your autoform 
 
 ### Changelog
 
+**0.1.5**
+
+- use NavigatedViewer instead of Modeler when form is disabled
+- use blobs for downloading exported diagram
+- trigger diagram export not on commandstack.changed but on button click
+
 **0.1.4** 
 
 - removed save button and update data model on commandstack.changed event
