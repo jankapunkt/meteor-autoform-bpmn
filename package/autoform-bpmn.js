@@ -3,6 +3,7 @@ import { Random } from 'meteor/random';
 import { ReactiveVar } from 'meteor/reactive-var';
 import { $ } from 'meteor/jquery';
 import BpmnModeler from 'bpmn-js/lib/Modeler';
+import BpmnViewer from 'bpmn-js/lib/NavigatedViewer';
 import propertiesPanelModule from 'bpmn-js-properties-panel';
 import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda';
 import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda';
@@ -30,11 +31,13 @@ AutoForm.addInputType('bpmn', {
 
 Template.afBpmn.onCreated(function () {
   // TODO add upload button and use this flag to indicate upload capabilities
+  // TODO is this still required?
   // const uploadSupported = window.File && window.FileReader && window.FileList && window.Blob;
 
   const instance = this;
-  instance.modelerLoaded = new ReactiveVar(false);
+  instance.bpmnjsLoaded = new ReactiveVar(false);
   instance.loadComplete = new ReactiveVar(false);
+  instance.disabled = new ReactiveVar(false)
   instance.saving = new ReactiveVar(false);
 
   instance.model = new ReactiveVar(instance.data.value ||
@@ -43,14 +46,18 @@ Template.afBpmn.onCreated(function () {
   instance.currentTarget = new ReactiveVar(false);
 
   const { atts } = this.data;
+  if (Object.hasOwnProperty.call(atts, "disabled")) {
+    instance.disabled.set(true)
+  }
 
   instance.key = new ReactiveVar(atts['data-schema-key'] || '');
   instance.mapping = new ReactiveVar(atts.mapping);
 
-  instance.serviceProvider = atts.service; // TODO use extension instead of replacing?
+  // TODO use extension instead of replacing?
+  // instance.serviceProvider = atts.service;
 
   instance.autorun(function () {
-    if (instance.modelerLoaded.get()) {
+    if (instance.bpmnjsLoaded.get()) {
       Utils.modeler.on('element.click', Utils.onElementClick.bind(instance));
       Utils.modeler.importXML(instance.model.get(), function (err, res) {
         if (res) {
@@ -65,6 +72,7 @@ Template.afBpmn.onCreated(function () {
 
 Template.afBpmn.onRendered(function () {
   const instance = this;
+  const disabled = instance.disabled.get()
 
   if (!instance._rendered) {
     instance._rendered = true;
@@ -75,39 +83,56 @@ Template.afBpmn.onRendered(function () {
     const downloadLink = $('#af-bpmn-download-diagram');
     const downloadSvgLink = $('#af-bpmn-download-svg');
 
-    Utils.modeler = new BpmnModeler({
-      container: Utils.canvas,
-      additionalModules: [
-        propertiesPanelModule,
-        propertiesProviderModule,
-      ],
-      propertiesPanel: {
-        parent: Utils.propertiesParent,
-      },
-      // make camunda prefix known for import, editing and export
-      moddleExtensions: {
-        camunda: camundaModdleDescriptor,
-      },
-    });
 
-
-    Utils.modeler.on('commandStack.changed', _.debounce(function (/* evt */) {
-      Utils.saveSVG(function (err, svg) {
-        Utils.setEncoded(downloadSvgLink, 'diagram.svg', err ? null : svg);
+    if (disabled) {
+      Utils.modeler = new BpmnViewer({
+        container: Utils.canvas,
+        // make camunda prefix known for import, editing and export
+        moddleExtensions: {
+          camunda: camundaModdleDescriptor,
+        },
+      })
+    }else{
+      Utils.modeler = new BpmnModeler({
+        container: Utils.canvas,
+        additionalModules: [
+          propertiesPanelModule,
+          propertiesProviderModule,
+        ],
+        propertiesPanel: {
+          parent: Utils.propertiesParent,
+        },
+        // make camunda prefix known for import, editing and export
+        moddleExtensions: {
+          camunda: camundaModdleDescriptor,
+        },
       });
 
-      Utils.saveDiagram(function (err, xml) {
-        $('#af-bpmn-model-input').val(xml);
-        Utils.setEncoded(downloadLink, 'diagram.bpmn', err ? null : xml);
-      });
 
-      return true;
-    }, 500));
+      Utils.modeler.on('commandStack.changed', _.debounce(function (/* evt */) {
+        Utils.saveSVG(function (err, svg) {
+          Utils.setEncoded(downloadSvgLink, 'diagram.svg', err ? null : svg);
+        });
+
+        Utils.saveDiagram(function (err, xml) {
+          $('#af-bpmn-model-input').val(xml);
+          Utils.setEncoded(downloadLink, 'diagram.bpmn', err ? null : xml);
+        });
+
+        return true;
+      }, 500));
+    }
+
   }
 
-  if (Utils.canvas && Utils.container && Utils.propertiesParent && !!$('.bpp-properties-panel')[0]) {
-    this.modelerLoaded.set(true);
+  if (disabled && Utils.canvas && Utils.container) {
+      this.bpmnjsLoaded.set(true);
+
   }
+  if (!disabled && Utils.canvas && Utils.container && Utils.propertiesParent && !!$('.bpp-properties-panel')[0]) {
+      this.bpmnjsLoaded.set(true);
+  }
+
 });
 
 Template.afBpmn.helpers({
@@ -118,6 +143,9 @@ Template.afBpmn.helpers({
     return Template.instance().loadComplete.get() &&
       Template.instance().loadComplete.get();
   },
+  disabled() {
+    return Template.instance().disabled.get();
+  }
 });
 
 
@@ -129,6 +157,9 @@ Template.afBpmn.events({
 
 
   'change #af-bpmn-file-upload'(event, templateInstance) {
+    const disabled = templateInstance.disabled.get()
+    if (disabled) return
+
     const target = $('#af-bpmn-file-upload').get(0);
     const { files } = target;
     if (files && files[0]) {

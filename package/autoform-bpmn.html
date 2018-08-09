@@ -26,14 +26,18 @@
         </div>
 
         <div class="canvas" id="af-bpmn-canvas"></div>
-        <div class="properties-panel-parent" id="af-bpmn-properties-panel"></div>
+        {{#unless disabled}}
+            <div class="properties-panel-parent" id="af-bpmn-properties-panel"></div>
+        {{/unless}}
     </div>
     <br>
     <div class="af-bpmn-buttons pull-right clearfix">
-        <label for="af-bpmn-file-upload" class="btn btn-sm btn-default">
-            <i class="fa fa-fw fa-upload"></i> Import BPMN
-        </label>
-        <input type="file" id="af-bpmn-file-upload" style="display: none"  accept=".bpmn,.bpmn20,.xml" />
+        {{#unless disabled}}
+            <label for="af-bpmn-file-upload" class="btn btn-sm btn-default">
+                <i class="fa fa-fw fa-upload"></i> Import BPMN
+            </label>
+        {{/unless}}
+        <input type="file" id="af-bpmn-file-upload" style="display: none" accept=".bpmn,.bpmn20,.xml"/>
         <a id="af-bpmn-download-diagram" href class="btn btn-sm btn-default" title="Download BPMN">
             <i class="fa fa-fw fa-download"></i> Download BPMN
         </a>
