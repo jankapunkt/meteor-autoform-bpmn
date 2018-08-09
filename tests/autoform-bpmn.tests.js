@@ -1,11 +1,11 @@
-import { _ } from 'meteor/underscore';
+// import { _ } from 'meteor/underscore';
 import { Template } from 'meteor/templating';
 import { assert } from 'meteor/practicalmeteor:chai';
 import { Random } from 'meteor/random';
 import SimpleSchema from 'simpl-schema';
 import { BpmnModelerUtils as Utils } from 'meteor/jkuester:autoform-bpmn';
 
-import { renderPizza, getIsRendered, getMultipleIsRendered, withRenderedTemplate } from "./testutils.tests";
+import { renderPizza, getIsRendered, getMultipleIsRendered, withRenderedTemplate } from './testutils.tests';
 import { pizza } from './pizza';
 
 SimpleSchema.extendOptions(['autoform']);
@@ -247,16 +247,15 @@ describe('autoform-bpmn', function () {
     };
 
     it('renders an imported process diagram', function (done) {
-      renderPizza(data, done)
+      renderPizza(data, done);
     });
   });
 
   describe('render view-mode on disabled form', function () {
-
     const data = {
       atts: {
         'data-schema-key': 'workflowData',
-        disabled: ""
+        disabled: '',
       },
       value: pizza,
     };
@@ -265,9 +264,9 @@ describe('autoform-bpmn', function () {
       withRenderedTemplate('afBpmn', data, (el) => {
         const template = $(el);
         const isRendered = getIsRendered(template);
-        isRendered('#af-bpmn-download-diagram', 1)
-        isRendered('#af-bpmn-download-svg', 1)
-        isRendered('#af-bpmn-file-upload', 0)
+        isRendered('#af-bpmn-download-diagram', 1);
+        isRendered('#af-bpmn-download-svg', 1);
+        isRendered('#af-bpmn-file-upload', 0);
         done();
       });
     });
@@ -291,12 +290,12 @@ describe('autoform-bpmn', function () {
 
         done();
       });
-    })
+    });
 
     it('renders all elments of an imported process diagram', function (done) {
-      renderPizza(data, done)
-    })
-  })
+      renderPizza(data, done);
+    });
+  });
 
   after(function () {
     Meteor.sendCoverage(function (/* stats, err */) {

@@ -37,7 +37,7 @@ Template.afBpmn.onCreated(function () {
   const instance = this;
   instance.bpmnjsLoaded = new ReactiveVar(false);
   instance.loadComplete = new ReactiveVar(false);
-  instance.disabled = new ReactiveVar(false)
+  instance.disabled = new ReactiveVar(false);
   instance.saving = new ReactiveVar(false);
 
   instance.model = new ReactiveVar(instance.data.value ||
@@ -46,8 +46,8 @@ Template.afBpmn.onCreated(function () {
   instance.currentTarget = new ReactiveVar(false);
 
   const { atts } = this.data;
-  if (Object.hasOwnProperty.call(atts, "disabled")) {
-    instance.disabled.set(true)
+  if (Object.hasOwnProperty.call(atts, 'disabled')) {
+    instance.disabled.set(true);
   }
 
   instance.key = new ReactiveVar(atts['data-schema-key'] || '');
@@ -72,7 +72,7 @@ Template.afBpmn.onCreated(function () {
 
 Template.afBpmn.onRendered(function () {
   const instance = this;
-  const disabled = instance.disabled.get()
+  const disabled = instance.disabled.get();
 
   if (!instance._rendered) {
     instance._rendered = true;
@@ -80,9 +80,6 @@ Template.afBpmn.onRendered(function () {
     Utils.canvas = $('#af-bpmn-canvas');
     Utils.container = $('#af-bpmn-drop-zone');
     Utils.propertiesParent = $('#af-bpmn-properties-panel');
-    const downloadLink = $('#af-bpmn-download-diagram');
-    const downloadSvgLink = $('#af-bpmn-download-svg');
-
 
     if (disabled) {
       Utils.modeler = new BpmnViewer({
@@ -91,8 +88,8 @@ Template.afBpmn.onRendered(function () {
         moddleExtensions: {
           camunda: camundaModdleDescriptor,
         },
-      })
-    }else{
+      });
+    } else {
       Utils.modeler = new BpmnModeler({
         container: Utils.canvas,
         additionalModules: [
@@ -116,17 +113,14 @@ Template.afBpmn.onRendered(function () {
         return true;
       }, 500));
     }
-
   }
 
   if (disabled && Utils.canvas && Utils.container) {
-      this.bpmnjsLoaded.set(true);
-
+    this.bpmnjsLoaded.set(true);
   }
   if (!disabled && Utils.canvas && Utils.container && Utils.propertiesParent && !!$('.bpp-properties-panel')[0]) {
-      this.bpmnjsLoaded.set(true);
+    this.bpmnjsLoaded.set(true);
   }
-
 });
 
 Template.afBpmn.helpers({
@@ -139,18 +133,18 @@ Template.afBpmn.helpers({
   },
   disabled() {
     return Template.instance().disabled.get();
-  }
+  },
 });
 
 
 Template.afBpmn.events({
   'submit'(event) {
     event.preventDefault();
-    event.stopPropagation()
+    event.stopPropagation();
   },
   'change #af-bpmn-file-upload'(event, templateInstance) {
-    const disabled = templateInstance.disabled.get()
-    if (disabled) return
+    const disabled = templateInstance.disabled.get();
+    if (disabled) return;
 
     const target = $('#af-bpmn-file-upload').get(0);
     const { files } = target;
@@ -175,19 +169,19 @@ Template.afBpmn.events({
     }
   },
   'click #af-bpmn-download-diagram'(event) {
-    event.preventDefault()
-    event.stopPropagation()
+    event.preventDefault();
+    event.stopPropagation();
 
     Utils.saveDiagram(function (err, xml) {
-      Utils.saveFile(' application/xml', 'diagram.bpmn', xml)
+      Utils.saveFile(' application/xml', 'diagram.bpmn', xml);
     });
   },
   'click #af-bpmn-download-svg'(event) {
-    event.preventDefault()
-    event.stopPropagation()
+    event.preventDefault();
+    event.stopPropagation();
 
     Utils.saveSVG(function (err, svg) {
-      Utils.saveFile('image/svg+xml', 'diagram.svg', svg)
+      Utils.saveFile('image/svg+xml', 'diagram.svg', svg);
     });
   },
 });

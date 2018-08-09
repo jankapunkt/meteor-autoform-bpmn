@@ -1,7 +1,7 @@
 // the test helpers, you know them
 // from the Meteor testing guide
-import { Tracker } from "meteor/tracker";
-import { Blaze } from "meteor/blaze";
+import { Tracker } from 'meteor/tracker';
+import { Blaze } from 'meteor/blaze';
 
 export const withDiv = function withDiv(callback) {
   const el = document.createElement('div');
@@ -93,4 +93,4 @@ export const renderPizza = function(data, done) {
     rendersAll(elementAtts, 1);
     done();
   });
-}
+};
