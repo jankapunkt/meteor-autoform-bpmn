@@ -73,7 +73,7 @@ Template.afBpmn.onCreated(function () {
 Template.afBpmn.onRendered(function () {
   const instance = this;
   const disabled = instance.disabled.get()
-console.log("rendered", disabled)
+
   if (!instance._rendered) {
     instance._rendered = true;
 
@@ -110,14 +110,9 @@ console.log("rendered", disabled)
 
 
       Utils.modeler.on('commandStack.changed', _.debounce(function (/* evt */) {
-        Utils.saveSVG(function (err, svg) {
-          console.log("svg", svg)
-        });
-
         Utils.saveDiagram(function (err, xml) {
           $('#af-bpmn-model-input').val(xml);
         });
-
         return true;
       }, 500));
     }
@@ -151,6 +146,7 @@ Template.afBpmn.helpers({
 Template.afBpmn.events({
   'submit'(event) {
     event.preventDefault();
+    event.stopPropagation()
   },
   'change #af-bpmn-file-upload'(event, templateInstance) {
     const disabled = templateInstance.disabled.get()
