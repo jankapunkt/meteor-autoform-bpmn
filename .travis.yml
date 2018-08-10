@@ -40,6 +40,6 @@ before_script:
   - "sh -e /etc/init.d/xvfb start"
 
 script:
-  - cd tests
+  - cd tests-coverage
   - meteor npm run test
   - cat .coverage/lcov.info | codacy-coverage || true # ignore codacy error
