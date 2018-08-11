@@ -17,12 +17,13 @@ cache:
 before_install:
   - curl https://install.meteor.com/?release=1.6.1.1 | /bin/sh
   - export PATH="$HOME/.meteor:$PATH"
+  - export PROJECT_ROOT=$(pwd)
   - npm install -g codacy-coverage
 
 install:
   - ./install.sh
 
 script:
-  - cd $HOME/tests
+  - cd $PROJECT_ROOT/tests
   - meteor npm run test
   - cat .coverage/lcov.info | codacy-coverage || true # ignore codacy error
