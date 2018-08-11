@@ -1,30 +1,27 @@
-sudo: true
+sudo: required
 dist: trusty
 
-# addons:
-#  apt:
-#    sources:
-#      - google-chrome
-#    packages:
-#      - google-chrome-stable
-
 language: node_js
+node_js:
+  - "8.9.1"
 
-
+before_cache:
+  - rm -f $HOME/.meteor/log/*.log
+  
 cache:
   directories:
     - $HOME/package/.npm
+    - $HOME/tests/.meteor
     - $HOME/tests/node_modules
 
 before_install:
   - curl https://install.meteor.com | /bin/sh
   - export PATH="$HOME/.meteor:$PATH"
+  - export CURRENT_PACKAGE=$(pwd)
+  - npm install -g codacy-coverage
 
 install:
-  - export CURRENT_PACKAGE=$(pwd)
   - ./install.sh
-  - meteor npm install -g codacy-coverage
-
 
 script:
   - cd $CURRENT_PACKAGE/tests
