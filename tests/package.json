@@ -10,7 +10,7 @@
     "test": "COVERAGE=1 COVERAGE_APP_FOLDER=$(pwd)/ COVERAGE_VERBOSE=1 TEST_SERVER=0 TEST_BROWSER_DRIVER=phantomjs meteor test --once --driver-package meteortesting:mocha --port=4444"
   },
   "dependencies": {
-    "@babel/runtime": "^7.0.0-beta.42",
+    "@babel/runtime": "^7.0.0-beta.55",
     "meteor-node-stubs": "^0.3.2",
     "simpl-schema": "1.4.2"
   },

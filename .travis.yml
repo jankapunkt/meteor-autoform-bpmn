@@ -25,7 +25,5 @@ install:
 
 script:
   - cd $PROJECT_ROOT/tests
-  # fix babel error
-  - meteor npm install --save @babel/runtime@latest
   - meteor npm run test
   - cat .coverage/lcov.info | codacy-coverage || true # ignore codacy error
