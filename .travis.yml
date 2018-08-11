@@ -3,11 +3,11 @@ dist: trusty
 
 language: node_js
 node_js:
-  - "8.9.1"
+  - "8.11.1"
 
 before_cache:
   - rm -f $HOME/.meteor/log/*.log
-  
+
 cache:
   directories:
     - $HOME/package/.npm
@@ -15,9 +15,8 @@ cache:
     - $HOME/tests/node_modules
 
 before_install:
-  - curl https://install.meteor.com | /bin/sh
+  - curl https://install.meteor.com/?release=1.6.1.1 | /bin/sh
   - export PATH="$HOME/.meteor:$PATH"
-  - export CURRENT_PACKAGE=$(pwd)
   - npm install -g codacy-coverage
 
 install:
