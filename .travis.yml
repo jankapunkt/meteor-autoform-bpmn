@@ -25,5 +25,7 @@ install:
 
 script:
   - cd $PROJECT_ROOT/tests
+  - meteor node -v
+  - cat package.json
   - meteor npm run test
   - cat .coverage/lcov.info | codacy-coverage || true # ignore codacy error
