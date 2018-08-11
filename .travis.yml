@@ -23,7 +23,10 @@ before_install:
 install:
   - export CURRENT_PACKAGE=$(pwd)
   - ./install.sh
+  - meteor npm install -g codacy-coverage
+
 
 script:
-  - cd tests
+  - cd $CURRENT_PACKAGE/tests
   - meteor npm run test
+  - cat .coverage/lcov.info | codacy-coverage || true # ignore codacy error
