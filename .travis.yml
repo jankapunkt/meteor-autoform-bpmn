@@ -15,7 +15,7 @@ cache:
     - $HOME/tests/node_modules
 
 before_install:
-  - curl https://install.meteor.com/?release=1.6.1.1 | /bin/sh
+  - curl https://install.meteor.com/?release=1.7.0.4 | /bin/sh
   - export PATH="$HOME/.meteor:$PATH"
   - export PROJECT_ROOT=$(pwd)
   - npm install -g codacy-coverage
