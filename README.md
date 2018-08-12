@@ -6,6 +6,9 @@
     <a href="https://travis-ci.org/jankapunkt/meteor-autoform-bpmn" alt="Build Status">
         <img src="https://travis-ci.org/jankapunkt/meteor-autoform-bpmn.svg?branch=master" />
     </a>
+    <a href='https://standardjs.com'>
+        <img src='https://img.shields.io/badge/code_style-standard-brightgreen.svg'>
+    </a>
     <a href="http://www.repostatus.org/#active" alt="Project Status: Active – The project has reached a stable, usable state and is being actively developed.">
         <img src="http://www.repostatus.org/badges/latest/active.svg" />
     </a>
