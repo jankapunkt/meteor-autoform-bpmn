@@ -8,11 +8,11 @@ node_js:
 before_cache:
   - rm -f $HOME/.meteor/log/*.log
 
-cache:
-  directories:
-    - $HOME/package/.npm
-    - $HOME/tests/.meteor
-    - $HOME/tests/node_modules
+#cache:
+#  directories:
+    # - $HOME/package/.npm
+    # - $HOME/tests/.meteor
+    # - $HOME/tests/node_modules
 
 before_install:
   - curl https://install.meteor.com/?release=1.7.0.4 | /bin/sh
