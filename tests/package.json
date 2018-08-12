@@ -22,5 +22,23 @@
     "eslint-plugin-import": "^2.13.0",
     "selenium-webdriver": "^3.6.0",
     "standard": "^11.0.1"
+  },
+  "standard": {
+    "globals": [
+      "AutoForm",
+      "it",
+      "describe",
+      "beforeEach",
+      "afterEach",
+      "after",
+      "$",
+      "Meteor",
+      "Blob",
+      "FileReader",
+      "Template",
+      "assert",
+      "Npm",
+      "Package"
+    ]
   }
 }
