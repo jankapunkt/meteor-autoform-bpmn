@@ -21,6 +21,6 @@ autopublish@1.0.7             # Publish all data to the clients (for prototyping
 insecure@1.0.7                # Allow all DB writes from clients (for prototyping)
 
 lmieulet:meteor-coverage@2.0.2
-meteortesting:mocha
+meteortesting:mocha@1.0.0
 practicalmeteor:chai
 jkuester:autoform-bpmn
