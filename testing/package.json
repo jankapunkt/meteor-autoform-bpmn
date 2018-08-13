@@ -16,7 +16,7 @@
     "simpl-schema": "^1.4.3"
   },
   "devDependencies": {
-    "chromedriver": "^2.37.0",
+    "chromedriver": "^2.41.0",
     "selenium-webdriver": "^3.6.0",
     "standard": "^11.0.1"
   },
