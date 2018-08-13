@@ -1,0 +1,65 @@
+<head>
+    <title>AutoForm BPMN Extension Example</title>
+</head>
+
+<body>
+<div class="container">
+    {{> hello}}
+</div>
+</body>
+
+<template name="hello">
+    <h1>AutoForm BPMN Extension Example</h1>
+    {{#if create}}
+        {{> quickForm id="bpmnForm" schema=schema type="normal" }}
+        <button class="btn btn-default" id="cancel-button">Cancel</button>
+    {{else}}
+        {{#with definitions}}
+            <ul class="list-group">
+                {{#each this}}
+                    <li class="list-group-item clearfix {{#if isCurrent}}list-group-item-info{{/if}}">
+
+                       <span class="pull-right">
+                            <button class="btn btn-sm btn-default edit-file"
+                                    data-target="{{this._id}}">
+                                <i class="fa fa-fw fa-pencil"></i>
+                            </button>
+                            <button class="btn btn-sm btn-default view-file"
+                                    data-target="{{this._id}}">
+                                <i class="fa fa-fw fa-eye"></i>
+                            </button>
+                            <button class="btn btn-sm btn-default toggle-preview"
+                                    data-target="{{this._id}}">
+                                <i class="fa fa-fw fa-code"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger delete-file"
+                                    data-target="{{this._id}}">
+                                <i class="fa fa-fw fa-trash"></i>
+                            </button>
+                       </span>
+
+                        <span class="text-muted">{{toDate this.updatedAt}}</span>
+                        <strong>{{this.title}}</strong>
+                        {{#if isCurrent this._id}}
+                            <hr>
+                            {{> quickForm id="bpmnUpdateForm" schema=schema type=formType doc=doc }}
+                            <button class="btn btn-default" id="cancel-button">Cancel</button>
+                        {{/if}}
+
+                        {{#if hasPreview this._id}}
+                            <hr>
+                            <pre>{{preview this._id}}</pre>
+                        {{/if}}
+                    </li>
+                {{/each}}
+            </ul>
+        {{else}}
+            <div class="jumbotron text-center">
+                <p>No processes yet</p>
+            </div>
+        {{/with}}
+        <button class="btn btn-success btn-lg btn-block" id="createbutton">
+            <i class="fa fa-fw fa-plus"></i> Create new
+        </button>
+    {{/if}}
+</template>
