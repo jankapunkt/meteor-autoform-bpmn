@@ -18,7 +18,7 @@ Npm.depends({
 })
 
 Package.onUse(function (api) {
-  api.versionsFrom('1.6')
+  api.versionsFrom('1.6.1.3')
   api.use('ecmascript')
   api.use('templating@1.3.2')
   api.use('underscore')
@@ -26,8 +26,8 @@ Package.onUse(function (api) {
   api.use('jquery')
   api.use('less')
   api.use('reactive-var')
-  api.use('aldeed:autoform@6.2.0')
-  api.use('aldeed:template-extension@4.0.0')
+  api.use('aldeed:autoform@6.3.0')
+  // api.use('aldeed:template-extension@4.0.0')
 
   api.addAssets([
     '.npm/package/node_modules/bpmn-js-properties-panel/styles/config.json',

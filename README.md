@@ -9,6 +9,7 @@
     <a href='https://standardjs.com'>
         <img src='https://img.shields.io/badge/code_style-standard-brightgreen.svg'>
     </a>
+    <a href="https://www.codacy.com/project/jankapunkt/meteor-autoform-bpmn/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=jankapunkt/meteor-autoform-bpmn&amp;utm_campaign=Badge_Grade_Dashboard"><img src="https://api.codacy.com/project/badge/Grade/1d8856bdd7344ecb9eed85c66ce4331c"/></a>
     <a href="http://www.repostatus.org/#active" alt="Project Status: Active – The project has reached a stable, usable state and is being actively developed.">
         <img src="http://www.repostatus.org/badges/latest/active.svg" />
     </a>
