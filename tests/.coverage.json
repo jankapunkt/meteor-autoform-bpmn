@@ -1,8 +1,0 @@
-{
-  "include": [
-    "**/packages/jkuester_autoform-bpmn.js",
-    "**/autoform-bpmn.js",
-    "**/packages/jkuester_autoform-bpmn-utils.js",
-    "**/autoform-bpmn-utils.js"
-  ]
-}
