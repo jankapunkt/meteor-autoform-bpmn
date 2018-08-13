@@ -70,8 +70,8 @@ Template.hello.helpers({
   toDate (date) {
     return new Date(date).toLocaleString()
   },
-  formType() {
-    return Template.instance().disable.get() ? "disabled" : "normal"
+  formType () {
+    return Template.instance().disable.get() ? 'disabled' : 'normal'
   }
 })
 

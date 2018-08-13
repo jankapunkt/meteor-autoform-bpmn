@@ -2,9 +2,7 @@
   "name": "meteor-autoform-bpmn-example",
   "private": true,
   "scripts": {
-    "start": "meteor run",
-    "lint": "standard",
-    "lint-fix": "standard --fix"
+    "start": "meteor run"
   },
   "standard": {
     "globals": [
@@ -17,8 +15,5 @@
     "bootstrap": "^3.3.7",
     "meteor-node-stubs": "^0.3.2",
     "simpl-schema": "^1.4.2"
-  },
-  "devDependencies": {
-    "standard": "*"
   }
 }
