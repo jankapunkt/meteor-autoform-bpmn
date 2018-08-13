@@ -19,10 +19,10 @@ before_install:
   - npm install -g codacy-coverage
 
 install:
-  - cd $PROJECT_ROOT/tests
+  - cd $PROJECT_ROOT/testing
   - meteor npm install
-  
+
 script:
-  - cd $PROJECT_ROOT/tests
+  - cd $PROJECT_ROOT/testing
   - ./test.sh
   - cat .coverage/lcov.info | codacy-coverage || true # ignore codacy error
