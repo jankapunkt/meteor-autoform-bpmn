@@ -93,7 +93,7 @@ export const renderPizza = function (data, done, callback) {
 
     rendersAll(elementAtts, 1)
     if (callback) {
-      callback(svgRoot)
+      callback(el)
     } else {
       done()
     }

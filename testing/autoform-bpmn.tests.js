@@ -253,11 +253,13 @@ describe('autoform-bpmn', function () {
           fullscreen: true
         },
         value: pizza
-      }, null, function (template) {
+      }, null, (el) => {
+        const template = $(el)
         const isRendered = getIsRendered(template)
         isRendered('.af-bpmn-fullscreen', 1)
         isRendered('.content-fullscreen', 1)
         isRendered('.af-bpmn-buttons-fullscreen', 1)
+        done()
       })
     })
   })
