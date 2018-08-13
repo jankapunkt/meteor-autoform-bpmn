@@ -15,8 +15,7 @@ const bpmnSchema = new SimpleSchema({
   data: {
     type: String,
     autoform: {
-      type: 'bpmn',
-      fullscreen: true, // hack used for tests
+      type: 'bpmn'
     }
   },
   updatedAt: {
