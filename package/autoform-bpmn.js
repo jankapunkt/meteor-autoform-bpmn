@@ -13,10 +13,14 @@ import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda'
 import 'bpmn-js/dist/assets/diagram-js.css'
 import 'bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css'
 
-import { Utils } from './autoform-bpmn-utils' // expose it to make it testable
+import { Utils, moduleAvailable } from './autoform-bpmn-utils' // expose it to make it testable
 import './autoform-bpmn.less'
 
 BpmnModelerUtils = Utils // eslint-disable-line no-undef
+
+const useFontawesome = !!Package['fortawesome:fontawesome'] ||
+  moduleAvailable('@fortawesome/fontawesome-free') ||
+  moduleAvailable('font-awesome')
 
 // extend autoform with bpmn modeler
 AutoForm.addInputType('bpmn', {
@@ -45,7 +49,7 @@ Template.afBpmn.onCreated(function () {
 
   instance.currentTarget = new ReactiveVar(false)
 
-  const { atts } = this.data
+  const {atts} = this.data
   if (Object.hasOwnProperty.call(atts, 'disabled')) {
     instance.disabled.set(true)
   }
@@ -136,8 +140,11 @@ Template.afBpmn.helpers({
   disabled () {
     return Template.instance().disabled.get()
   },
-  fullscreen() {
+  fullscreen () {
     return Template.instance().fullscreen.get()
+  },
+  useFontawesome () {
+    return !useFontawesome
   }
 })
 
@@ -151,7 +158,7 @@ Template.afBpmn.events({
     if (disabled) return
 
     const target = $('#af-bpmn-file-upload').get(0)
-    const { files } = target
+    const {files} = target
     if (files && files[0]) {
       const file = files[0]
       const reader = new FileReader()

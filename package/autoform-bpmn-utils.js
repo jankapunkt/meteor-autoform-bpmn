@@ -43,7 +43,7 @@ export const Utils = {
     }
   },
   saveDiagram (done) {
-    Utils.modeler.saveXML({ format: true }, function (err, xml) {
+    Utils.modeler.saveXML({format: true}, function (err, xml) {
       done(err, xml)
     })
   },
@@ -53,13 +53,13 @@ export const Utils = {
 
   onElementClick (event) {
     const instance = this // because we bind instance to this context
-    const { element } = event
-    const { businessObject } = element
+    const {element} = event
+    const {businessObject} = element
     instance.currentTarget.set(businessObject)
   },
 
   saveFile (type, filename, data) {
-    const blob = new Blob([data], { type })
+    const blob = new Blob([data], {type})
     if (window.navigator.msSaveOrOpenBlob) {
       window.navigator.msSaveBlob(blob, filename)
     } else {
@@ -71,4 +71,12 @@ export const Utils = {
       document.body.removeChild(elem)
     }
   }
+}
+
+export const moduleAvailable = function moduleAvailable (name) {
+  try {
+    require.resolve(name)
+    return true
+  } catch (e) {}
+  return false
 }

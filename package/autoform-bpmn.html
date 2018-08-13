@@ -47,7 +47,11 @@
             <i class="fa fa-fw fa-download"></i> Download SVG
         </a>
         <button id="af-bpmn-fullscreen-toggle" class="btn btn-sm btn-default">
-            <i class="fa fa-fw fa-{{#if fullscreen}}compress{{else}}expand{{/if}}"></i>
+            {{#if fullscreen}}
+                <i class="fa fa-fw fa-compress"></i> {{#unless useFontawesome}}Compress{{/unless}}
+                {{else}}
+                <i class="fa fa-fw fa-expand"></i> {{#unless useFontawesome}}Expand{{/unless}}
+            {{/if}}
         </button>
     </div>
     </div>
