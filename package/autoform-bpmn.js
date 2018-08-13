@@ -56,7 +56,7 @@ Template.afBpmn.onCreated(function () {
 
   instance.key = new ReactiveVar(atts['data-schema-key'] || '')
   instance.mapping = new ReactiveVar(atts.mapping)
-  instance.fullscreen = new ReactiveVar(!!atts.fullscreen)
+  instance.fullscreen = new ReactiveVar(atts.fullscreen)
 
   // TODO use extension instead of replacing?
   // instance.serviceProvider = atts.service;
@@ -144,7 +144,7 @@ Template.afBpmn.helpers({
     return Template.instance().fullscreen.get()
   },
   useFontawesome () {
-    return !useFontawesome
+    return useFontawesome
   }
 })
 
