@@ -17,7 +17,7 @@
   },
   "devDependencies": {
     "chromedriver": "^2.41.0",
-    "selenium-webdriver": "^3.6.0",
+    "selenium-webdriver": "^3.4.0",
     "standard": "^11.0.1"
   },
   "standard": {
