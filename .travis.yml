@@ -19,8 +19,9 @@ before_install:
   - npm install -g codacy-coverage
 
 install:
-  - ./install.sh
-
+  - cd $PROJECT_ROOT/tests
+  - meteor npm install
+  
 script:
   - cd $PROJECT_ROOT/tests
   - ./test.sh
