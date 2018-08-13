@@ -1,6 +1,6 @@
 Package.describe({
   name: 'jkuester:autoform-bpmn',
-  version: '0.1.5',
+  version: '0.1.6',
   // Brief, one-line summary of the package.
   summary: 'Integrate the bpmn-js (bpmn.io) modeler into autoform.',
   // URL to the Git repository containing the source code for this package.
@@ -27,7 +27,6 @@ Package.onUse(function (api) {
   api.use('less')
   api.use('reactive-var')
   api.use('aldeed:autoform@6.3.0')
-  // api.use('aldeed:template-extension@4.0.0')
 
   api.addAssets([
     '.npm/package/node_modules/bpmn-js-properties-panel/styles/config.json',

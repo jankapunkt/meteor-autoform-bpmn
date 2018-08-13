@@ -52,6 +52,7 @@ Template.afBpmn.onCreated(function () {
 
   instance.key = new ReactiveVar(atts['data-schema-key'] || '')
   instance.mapping = new ReactiveVar(atts.mapping)
+  instance.fullscreen = new ReactiveVar(!!atts.fullscreen)
 
   // TODO use extension instead of replacing?
   // instance.serviceProvider = atts.service;
@@ -134,6 +135,9 @@ Template.afBpmn.helpers({
   },
   disabled () {
     return Template.instance().disabled.get()
+  },
+  fullscreen() {
+    return Template.instance().fullscreen.get()
   }
 })
 
@@ -184,5 +188,10 @@ Template.afBpmn.events({
       if (err) console.error(err)
       if (svg) Utils.saveFile('image/svg+xml', 'diagram.svg', svg)
     })
+  },
+  'click #af-bpmn-fullscreen-toggle' (event, templateInstance) {
+    event.preventDefault()
+    const isFullscreen = templateInstance.fullscreen.get()
+    templateInstance.fullscreen.set(!isFullscreen)
   }
 })

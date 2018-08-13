@@ -245,6 +245,21 @@ describe('autoform-bpmn', function () {
     it('renders an imported process diagram', function (done) {
       renderPizza(data, done)
     })
+
+    it('renders an imported process diagram on fullscreen', function (done) {
+      renderPizza({
+        atts: {
+          'data-schema-key': 'workflowData',
+          fullscreen: true
+        },
+        value: pizza
+      }, null, function (template) {
+        const isRendered = getIsRendered(template)
+        isRendered('.af-bpmn-fullscreen', 1)
+        isRendered('.content-fullscreen', 1)
+        isRendered('.af-bpmn-buttons-fullscreen', 1)
+      })
+    })
   })
 
   describe('render view-mode on disabled form', function () {

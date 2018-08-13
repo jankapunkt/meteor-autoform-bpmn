@@ -41,7 +41,7 @@ export const getMultipleIsRendered = function (template) {
   }
 }
 
-export const renderPizza = function (data, done) {
+export const renderPizza = function (data, done, callback) {
   withRenderedTemplate('afBpmn', data, (el) => {
     const svgRoot = $($(el).find('svg')[0])
     const rendersAll = getMultipleIsRendered(svgRoot)
@@ -92,6 +92,10 @@ export const renderPizza = function (data, done) {
     ]
 
     rendersAll(elementAtts, 1)
-    done()
+    if (callback) {
+      callback(svgRoot)
+    } else {
+      done()
+    }
   })
 }
