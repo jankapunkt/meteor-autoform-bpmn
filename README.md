@@ -26,6 +26,11 @@ The modeler allows you to set the camunda moddle options, so that your autoform 
 
 ### Changelog
 
+** 0.1.6 **
+
+- fullscreen toggle on/off functionality added
+- build against `AutoForm@6.3.0`
+
 **0.1.5**
 
 - use NavigatedViewer instead of Modeler when form is disabled
@@ -52,7 +57,7 @@ See the `/example` README on how to run the example project (it's easy).
 
 ### Requirements
 
-This package requires Meteor 1.6 or higher and is currently built against with AutoForm 6.2.0
+This package requires Meteor 1.6 or higher and is currently built against with AutoForm 6.3.0
 
 ### Install
 
