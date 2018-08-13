@@ -1,0 +1,19 @@
+{
+  "name": "meteor-autoform-bpmn-example",
+  "private": true,
+  "scripts": {
+    "start": "meteor run"
+  },
+  "standard": {
+    "globals": [
+      "AutoForm",
+      "$"
+    ]
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.0.0-beta.42",
+    "bootstrap": "^3.3.7",
+    "meteor-node-stubs": "^0.3.2",
+    "simpl-schema": "^1.4.2"
+  }
+}

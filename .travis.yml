@@ -1,6 +1,4 @@
-sudo: required
-dist: trusty
-
+sudo: true
 language: node_js
 node_js:
   - "8.11.1"
@@ -11,21 +9,24 @@ before_cache:
 cache:
   directories:
     - $HOME/package/.npm
-    - $HOME/tests/.meteor
-    - $HOME/tests/node_modules
+    - $HOME/testing/.meteor
+    - $HOME/testing/node_modules
 
 before_install:
-  - curl https://install.meteor.com/?release=1.6.1.1 | /bin/sh
+  - curl https://install.meteor.com/?release=1.7.0.4 | /bin/sh
   - export PATH="$HOME/.meteor:$PATH"
   - export PROJECT_ROOT=$(pwd)
   - npm install -g codacy-coverage
 
 install:
-  - ./install.sh
+  - cd $PROJECT_ROOT/testing
+  - meteor npm install
+
+before_script:
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
 
 script:
-  - cd $PROJECT_ROOT/tests
-  - meteor node -v
-  - cat package.json
-  - meteor npm run test
+  - cd $PROJECT_ROOT/testing
+  - ./test.sh
   - cat .coverage/lcov.info | codacy-coverage || true # ignore codacy error

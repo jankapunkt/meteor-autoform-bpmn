@@ -1,53 +1,54 @@
+import { _ } from 'meteor/underscore'
 // the test helpers, you know them
 // from the Meteor testing guide
-import { Tracker } from 'meteor/tracker';
-import { Blaze } from 'meteor/blaze';
+import { Tracker } from 'meteor/tracker'
+import { Blaze } from 'meteor/blaze'
 
-export const withDiv = function withDiv(callback) {
-  const el = document.createElement('div');
-  document.body.appendChild(el);
+export const withDiv = function withDiv (callback) {
+  const el = document.createElement('div')
+  document.body.appendChild(el)
   try {
-    callback(el);
+    callback(el)
   } finally {
-    document.body.removeChild(el);
+    document.body.removeChild(el)
   }
-};
+}
 
-export const withRenderedTemplate = function withRenderedTemplate(template, data, callback) {
+export const withRenderedTemplate = function withRenderedTemplate (template, data, callback) {
   withDiv((el) => {
-    const ourTemplate = _.isString(template) ? Template[template] : template;
-    Blaze.renderWithData(ourTemplate, data, el);
-    Tracker.flush();
+    const ourTemplate = _.isString(template) ? Template[template] : template
+    Blaze.renderWithData(ourTemplate, data, el)
+    Tracker.flush()
     setTimeout(() => {
-      callback(el);
-    }, 250);
-  });
-};
+      callback(el)
+    }, 250)
+  })
+}
 
 export const getIsRendered = function (template) {
-  return function isRendered(name, count) {
-    assert.equal(template.find(name).length, count, name);
-  };
-};
+  return function isRendered (name, count) {
+    assert.equal(template.find(name).length, count, name)
+  }
+}
 
 export const getMultipleIsRendered = function (template) {
-  const isRendered = getIsRendered(template);
+  const isRendered = getIsRendered(template)
 
-  return function mutlipleIsRendered(arr, count) {
+  return function mutlipleIsRendered (arr, count) {
     arr.forEach((el) => {
-      isRendered(el, count);
-    });
-  };
-};
+      isRendered(el, count)
+    })
+  }
+}
 
-export const renderPizza = function(data, done) {
+export const renderPizza = function (data, done, callback) {
   withRenderedTemplate('afBpmn', data, (el) => {
-    const svgRoot = $($(el).find('svg')[0]);
-    const rendersAll = getMultipleIsRendered(svgRoot);
-    const isRendered = getIsRendered(svgRoot);
+    const svgRoot = $($(el).find('svg')[0])
+    const rendersAll = getMultipleIsRendered(svgRoot)
+    const isRendered = getIsRendered(svgRoot)
 
-    isRendered('.djs-element', 80);
-    isRendered('.djs-shape', 56);
+    isRendered('.djs-element', 80)
+    isRendered('.djs-shape', 56)
 
     const elementAtts = [
       'g[data-element-id="_6-650"]',
@@ -87,10 +88,14 @@ export const renderPizza = function(data, done) {
       'g[data-element-id="_6-428"]',
       'g[data-element-id="_6-430"]',
       'g[data-element-id="_6-434"]',
-      'g[data-element-id="_6-436"]',
-    ];
+      'g[data-element-id="_6-436"]'
+    ]
 
-    rendersAll(elementAtts, 1);
-    done();
-  });
-};
+    rendersAll(elementAtts, 1)
+    if (callback) {
+      callback(el)
+    } else {
+      done()
+    }
+  })
+}

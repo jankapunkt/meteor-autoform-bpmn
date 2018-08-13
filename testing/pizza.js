@@ -381,4 +381,4 @@ export const pizza =
             </bpmndi:BPMNEdge>
         </bpmndi:BPMNPlane>
     </bpmndi:BPMNDiagram>
-</semantic:definitions>`;
+</semantic:definitions>`

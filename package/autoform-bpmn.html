@@ -7,8 +7,8 @@
             </strong>
         </div>
     {{/unless}}
-
-    <div class="content" id="af-bpmn-drop-zone">
+    <div class="af-bpmn-wrap {{#if fullscreen}}af-bpmn-fullscreen{{/if}}">
+    <div class="content {{#if fullscreen}}content-fullscreen{{/if}}" id="af-bpmn-drop-zone">
         <div class="message intro">
             <div class="note">
                 Drop BPMN diagram from your desktop or <a id="af-bpmn-create-diagram" href>create a new diagram</a> to
@@ -33,7 +33,7 @@
         {{/unless}}
     </div>
     <br>
-    <div class="af-bpmn-buttons pull-right clearfix">
+    <div class="af-bpmn-buttons {{#if fullscreen}}af-bpmn-buttons-fullscreen{{else}}pull-right{{/if}} clearfix">
         {{#unless disabled}}
             <label for="af-bpmn-file-upload" class="btn btn-sm btn-default">
                 <i class="fa fa-fw fa-upload"></i> Import BPMN
@@ -46,6 +46,14 @@
         <a id="af-bpmn-download-svg" href class="btn btn-sm  btn-default" title="Download SVG">
             <i class="fa fa-fw fa-download"></i> Download SVG
         </a>
+        <button id="af-bpmn-fullscreen-toggle" class="btn btn-sm btn-default">
+            {{#if fullscreen}}
+                <i class="fa fa-fw fa-compress"></i> {{#unless useFontawesome}}Compress{{/unless}}
+                {{else}}
+                <i class="fa fa-fw fa-expand"></i> {{#unless useFontawesome}}Expand{{/unless}}
+            {{/if}}
+        </button>
+    </div>
     </div>
 
     <!-- autoform related -->

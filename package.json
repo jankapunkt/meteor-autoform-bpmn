@@ -1,0 +1,29 @@
+{
+  "name": "linting-helper",
+  "private": true,
+  "scripts": {
+    "lint": "standard",
+    "lint-fix": "standard --fix"
+  },
+  "devDependencies": {
+    "standard": "*"
+  },
+  "standard": {
+    "globals": [
+      "AutoForm",
+      "it",
+      "describe",
+      "beforeEach",
+      "afterEach",
+      "after",
+      "$",
+      "Meteor",
+      "Blob",
+      "FileReader",
+      "Template",
+      "assert",
+      "Npm",
+      "Package"
+    ]
+  }
+}

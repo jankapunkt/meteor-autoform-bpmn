@@ -1,41 +1,39 @@
 Package.describe({
   name: 'jkuester:autoform-bpmn',
-  version: '0.1.5',
+  version: '0.1.6',
   // Brief, one-line summary of the package.
   summary: 'Integrate the bpmn-js (bpmn.io) modeler into autoform.',
   // URL to the Git repository containing the source code for this package.
   git: 'https://github.com/jankapunkt/meteor-autoform-bpmn.git',
   // By default, Meteor will default to using README.md for documentation.
   // To avoid submitting documentation, set this field to null.
-  documentation: 'README.md',
-});
-
+  documentation: 'README.md'
+})
 
 Npm.depends({
   'bpmn-js': '0.27.6',
   'bpmn-js-properties-panel': '0.22.1',
   'camunda-bpmn-moddle': '2.0.0',
-  'diagram-js': '0.28.2',
-});
+  'diagram-js': '0.28.2'
+})
 
 Package.onUse(function (api) {
-  api.versionsFrom('1.6');
-  api.use('ecmascript');
-  api.use('templating@1.3.2');
-  api.use('underscore');
-  api.use('random');
-  api.use('jquery');
-  api.use('less');
-  api.use('reactive-var');
-  api.use('aldeed:autoform@6.2.0');
-  api.use('aldeed:template-extension@4.0.0');
+  api.versionsFrom('1.6.1.3')
+  api.use('ecmascript')
+  api.use('templating@1.3.2')
+  api.use('underscore')
+  api.use('random')
+  api.use('jquery')
+  api.use('less')
+  api.use('reactive-var')
+  api.use('aldeed:autoform@6.3.0')
 
   api.addAssets([
     '.npm/package/node_modules/bpmn-js-properties-panel/styles/config.json',
     '.npm/package/node_modules/camunda-bpmn-moddle/resources/camunda.json',
     // lOCAL
-    'autoform-bpmn.less',
-  ], 'client');
+    'autoform-bpmn.less'
+  ], 'client')
 
   api.addFiles([
     // diagram-js
@@ -54,16 +52,16 @@ Package.onUse(function (api) {
     '.npm/package/node_modules/bpmn-js-properties-panel/styles/header.less',
     '.npm/package/node_modules/bpmn-js-properties-panel/styles/listeners.less',
     '.npm/package/node_modules/bpmn-js-properties-panel/styles/tabs.less',
-    '.npm/package/node_modules/bpmn-js-properties-panel/styles/properties.less',
+    '.npm/package/node_modules/bpmn-js-properties-panel/styles/properties.less'
 
-  ], 'client', { isImport: true });
+  ], 'client', { isImport: true })
 
   api.addFiles([
     // 'autoform-bpmn-main.css',
     'autoform-bpmn-utils.js',
     'autoform-bpmn.html',
-    'autoform-bpmn.js',
-  ], 'client');
+    'autoform-bpmn.js'
+  ], 'client')
 
-  api.export('BpmnModelerUtils');
-});
+  api.export('BpmnModelerUtils')
+})

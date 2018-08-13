@@ -1,4 +1,4 @@
-import { Random } from 'meteor/random';
+import { Random } from 'meteor/random'
 
 export const Utils = {
 
@@ -7,7 +7,7 @@ export const Utils = {
   propertiesParent: null,
   container: null,
 
-  createProcess(title) {
+  createProcess (title) {
     return `<?xml version="1.0" encoding="UTF-8"?>
         <bpmn2:definitions 
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
@@ -28,47 +28,55 @@ export const Utils = {
             </bpmndi:BPMNShape> 
           </bpmndi:BPMNPlane> 
         </bpmndi:BPMNDiagram> 
-      </bpmn2:definitions>`;
+      </bpmn2:definitions>`
   },
 
-  setEncoded(link, name, data) {
+  setEncoded (link, name, data) {
     if (data) {
-      const encodedData = encodeURIComponent(data);
+      const encodedData = encodeURIComponent(data)
       link.prop('disabled', false).attr({
         href: `data:application/bpmn20-xml;charset=UTF-8,${encodedData}`,
-        download: name,
-      });
+        download: name
+      })
     } else {
-      link.prop('disabled', true);
+      link.prop('disabled', true)
     }
   },
-  saveDiagram(done) {
-    Utils.modeler.saveXML({ format: true }, function (err, xml) {
-      done(err, xml);
-    });
+  saveDiagram (done) {
+    Utils.modeler.saveXML({format: true}, function (err, xml) {
+      done(err, xml)
+    })
   },
-  saveSVG(done) {
-    Utils.modeler.saveSVG(done);
-  },
-
-  onElementClick(event) {
-    const instance = this; // because we bind instance to this context
-    const { element } = event;
-    const { businessObject } = element;
-    instance.currentTarget.set(businessObject);
+  saveSVG (done) {
+    Utils.modeler.saveSVG(done)
   },
 
-  saveFile(type, filename, data) {
-    const blob = new Blob([data], { type });
+  onElementClick (event) {
+    const instance = this // because we bind instance to this context
+    const {element} = event
+    const {businessObject} = element
+    instance.currentTarget.set(businessObject)
+  },
+
+  saveFile (type, filename, data) {
+    const blob = new Blob([data], {type})
     if (window.navigator.msSaveOrOpenBlob) {
-      window.navigator.msSaveBlob(blob, filename);
+      window.navigator.msSaveBlob(blob, filename)
     } else {
-      const elem = window.document.createElement('a');
-      elem.href = window.URL.createObjectURL(blob);
-      elem.download = filename;
-      document.body.appendChild(elem);
-      elem.click();
-      document.body.removeChild(elem);
+      const elem = window.document.createElement('a')
+      elem.href = window.URL.createObjectURL(blob)
+      elem.download = filename
+      document.body.appendChild(elem)
+      elem.click()
+      document.body.removeChild(elem)
     }
-  },
-};
+  }
+}
+
+export const moduleAvailable = function moduleAvailable (name) {
+  try {
+    require.resolve(name)
+    return true
+  } catch (e) {}
+  return false
+}
