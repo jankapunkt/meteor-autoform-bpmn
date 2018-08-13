@@ -3,9 +3,9 @@
 <hr>
 
 <p align="center">
-    <a href="https://travis-ci.org/jankapunkt/meteor-autoform-bpmn" alt="Build Status">
+    <!--<a href="https://travis-ci.org/jankapunkt/meteor-autoform-bpmn" alt="Build Status">
         <img src="https://travis-ci.org/jankapunkt/meteor-autoform-bpmn.svg?branch=master" />
-    </a>
+    </a>-->
     <a href='https://standardjs.com'>
         <img src='https://img.shields.io/badge/code_style-standard-brightgreen.svg'>
     </a>
@@ -48,7 +48,7 @@ The modeler allows you to set the camunda moddle options, so that your autoform 
 
 ### Demo
 
-There is a minimal [DEMO project](https://github.com/jankapunkt/meteor-autoform-bpmn-example) that shows this extension in use. You can clone it and just run it as a Meteor app.
+See the `/example` README on how to run the example project (it's easy).
 
 ### Requirements
 

@@ -3,13 +3,20 @@ Demo for the AutoForm extension [jkuester:autoform-bpmn](https://github.com/jank
 
 ### Installation
 
+On linux or OSX just run
+
 ```
-git clone git@github.com:jankapunkt/meteor-autoform-bpmn-example.git
-cd meteor-autoform-bpmn-example
-meteor npm install
-meteor
+$ ./run.sh
+```
+
+On windows you need to run
+
+```
+Set METEOR_PACKAGE_DIRS=%CD%\..
+meteor --port=9999
 ```
 
 ### Screenshot
 
 ![Screenshot](screenshot.png)
+
