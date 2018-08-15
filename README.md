@@ -26,7 +26,7 @@ The modeler allows you to set the camunda moddle options, so that your autoform 
 
 ### Changelog
 
-** 0.1.6 **
+**0.1.6**
 
 - fullscreen toggle on/off functionality added
 - build against `AutoForm@6.3.0`
