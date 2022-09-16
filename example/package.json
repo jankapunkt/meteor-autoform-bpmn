@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.0.0-beta.42",
-    "bootstrap": "^3.3.7",
+    "bootstrap": "^3.4.1",
     "meteor-node-stubs": "^0.3.2",
     "simpl-schema": "^1.4.2"
   }
